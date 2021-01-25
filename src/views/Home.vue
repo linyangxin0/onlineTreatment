@@ -8,6 +8,9 @@
         <button @click="enterRoom(item)">进入房间</button>
       </div>
     </div>
+    <div>
+      当前在线人数：{{onlineNum}}
+    </div>
   </div>
 </template>
 
@@ -19,7 +22,8 @@ export default {
   data() {
     return {
       roomName: '',
-      rooms: []
+      rooms: [],
+      onlineNum: 0
     }
   },
   methods: {
@@ -41,12 +45,12 @@ export default {
     updateRoomList(res) {
       this.rooms = res
     },
-    enterRoomSuccess(res){
+    enterRoomSuccess(res) {
       console.log(res)
     },
-    getInitInfo(res){
-      this.rooms = res
-    }
+    UpdateOnlineNum(res) {
+      this.onlineNum = res
+    },
   }
 }
 </script>

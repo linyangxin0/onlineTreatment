@@ -1,6 +1,13 @@
 <template>
   <div class="home">
-
+    <input v-model="roomName">
+    <button @click="createRoom">创建房间</button>
+    <div v-for="item in rooms">
+      <div>
+        <span>{{ item.roomName }}</span>
+        <button @click="enterRoom(item)">进入房间</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -9,19 +16,37 @@
 export default {
   name: 'Home',
   components: {},
-  methods: {
-
+  data() {
+    return {
+      roomName: '',
+      rooms: []
+    }
   },
-  sockets: {
-    connect(data) {
-      this.$socket.emit('login', {
-        name: 'lin',
-        password: '123'
+  methods: {
+    createRoom() {
+      this.$socket.emit('createRoom', {
+        roomName: this.roomName
       })
     },
-    relogin(data) {
-      console.log(data)
+    enterRoom(item) {
+      this.$socket.emit('enterRoom', {
+        roomId: item.roomId
+      })
+    }
+  },
+  sockets: {
+    connect() {
+      this.$socket.emit('init')
     },
+    updateRoomList(res) {
+      this.rooms = res
+    },
+    enterRoomSuccess(res){
+      console.log(res)
+    },
+    getInitInfo(res){
+      this.rooms = res
+    }
   }
 }
 </script>

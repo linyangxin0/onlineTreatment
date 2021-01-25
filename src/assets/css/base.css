@@ -1,0 +1,10 @@
+@import "normalize.css";
+
+/*清浮动*/
+.clear-fix::after {
+  clear: both;
+  content: '';
+  display: block;
+}
+
+

@@ -8,8 +8,8 @@ import VueSocketIO from "vue-socket.io";
 Vue.config.productionTip = false
 
 Vue.use(new VueSocketIO({
-  debug: true,
-  connection: 'http://192.168.21.102:8088',
+  debug: false,
+  connection: 'https://192.168.21.102:8088',
   vuex: {
     store,
     actionPrefix: 'SOCKET_',

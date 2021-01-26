@@ -1,7 +1,16 @@
 let express = require('express');
 let app = express();
 let http = require('http').Server(app);
-let io = require('socket.io')(http);
+
+var fs = require('fs');
+let sslOptions = {
+    key: fs.readFileSync('C:/privkey.key'),//里面的文件替换成你生成的私钥
+    cert: fs.readFileSync('C:/cacert.pem')//里面的文件替换成你生成的证书
+};
+
+const https = require('https').createServer(sslOptions, app);
+let io = require('socket.io')(https);
+
 
 //当前在线人数
 let onlinePersonNum = 0;
@@ -27,7 +36,7 @@ io.on('connect', (socket) => {
     socket.on('getUserList', () => {
         if (io.sockets.connected[socket.id]) {
             let userList = [];
-            for (let key in io.sockets.connected){
+            for (let key in io.sockets.connected) {
                 userList.push(key)
             }
             io.sockets.connected[socket.id].emit('sendUserList', userList)
@@ -70,9 +79,10 @@ io.on('connect', (socket) => {
     //离开房间
 
 
+
+
     //sdp 消息的转发
     socket.on('sdp', (data) => {
-        console.log('sdp');
         console.log(data.description);
         //console.log('sdp:  ' + data.sender + '   to:' + data.to);
         socket.to(data.to).emit('sdp', {
@@ -94,5 +104,5 @@ io.on('connect', (socket) => {
 
 });
 
-http.listen(8088);
+https.listen(8088);
 console.log('监听8088端口');

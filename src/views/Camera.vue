@@ -2,7 +2,7 @@
   <div class="about">
     <div v-for="item in users">
       <span>{{ item }}</span>
-      <button @click="StartCall(item)">通话</button>
+      <button @click="StartCall(item,true)">通话</button>
     </div>
     <video ref="localVideoElm" class="videoPlayer" autoplay></video>
     <video ref="remoteVideo" class="videoPlayer" autoplay></video>
@@ -34,6 +34,8 @@ export default {
   },
   created() {
     this.$socket.emit('getUserList')
+    console.log(navigator)
+
   },
   mounted() {
     this.InitCamera();

@@ -1,13 +1,37 @@
 <template>
-  <div class="about">
-    <div v-for="item in users">
-      <span>{{ item }}</span>
-      <button @click="StartCall(item,true)"
-              v-if="item !== socketId">通话
-      </button>
+  <div class="camera">
+    <div class="camera-left">
+      <video ref="localVideoElm"
+             class="videoPlayer localVideoPlayer"
+             :class="{makeSmall: playerChange }"
+             autoplay
+             @click="exchangeSize(playerChange)"
+             poster="../assets/img/loading.gif"></video>
+      <video ref="remoteVideoElm"
+             class="videoPlayer remoteVideoPlayer"
+             autoplay
+             @click="exchangeSize(!playerChange)"
+             :class="{makeSmall: !playerChange }"
+             poster="../assets/img/loading.gif"></video>
     </div>
-    <video ref="localVideoElm" class="videoPlayer" autoplay></video>
-    <video ref="remoteVideoElm" class="videoPlayer" autoplay></video>
+    <div class="camera-right">
+      <div class="camera-right-top">
+        <div>
+          <span>当前房间成员</span>
+        </div>
+        <div v-for="item in users">
+          <span>{{ item }}</span>
+          <el-button icon="el-icon-phone" size="mini" @click="StartCall(item,true)"
+                     v-if="item !== socketId">通话
+          </el-button>
+        </div>
+      </div>
+      <el-divider></el-divider>
+      <div class="camera-right-bottom">
+        1
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -32,7 +56,8 @@ export default {
           ]
         }]
       },
-      users: []
+      users: [],
+      playerChange: true
     }
   },
   created() {
@@ -198,6 +223,11 @@ export default {
         this.$refs.remoteVideoElm.srcObject = str;
         // }
       }
+    },
+    exchangeSize(data) {
+      if (data) {
+        this.playerChange = !this.playerChange;
+      }
     }
   },
 }
@@ -205,6 +235,48 @@ export default {
 
 <style scoped>
 .videoPlayer {
-  width: 800px;
+  width: 100%;
+}
+
+.camera {
+  display: flex;
+  margin: 10px;
+}
+
+.camera-left {
+  flex: 2;
+  margin-right: 20px;
+
+  position: relative;
+}
+
+.camera-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 98vh;
+}
+
+.camera-right-top {
+  flex: 1;
+
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
+
+}
+
+.camera-right-bottom {
+  flex: 4;
+
+  padding: 10px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)
+}
+
+.makeSmall {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 200px;
+  z-index: 9;
 }
 </style>

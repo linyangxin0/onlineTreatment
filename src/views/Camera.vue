@@ -17,18 +17,27 @@
     <div class="camera-right">
       <div class="camera-right-top">
         <div>
-          <span>当前房间成员</span>
+          <span class="camera-right-top-title">当前房间成员</span>
         </div>
-        <div v-for="item in users">
-          <span>{{ item }}</span>
-          <el-button icon="el-icon-phone" size="mini" @click="StartCall(item,true)"
-                     v-if="item !== socketId">通话
-          </el-button>
+        <div v-for="item in users" class="user-line">
+          <span class="user-id">{{ item }}</span>
+          <div class="connect-btn">
+            <el-button icon="el-icon-phone" size="mini" @click="StartCall(item,true)"
+                       v-if="item !== socketId">通话
+            </el-button>
+          </div>
         </div>
       </div>
       <el-divider></el-divider>
       <div class="camera-right-bottom">
-        1
+        <div class="chat-content">
+
+        </div>
+        <div class="input-content">
+          <el-input placeholder="请输入..." v-model="inputContent">
+            <el-button slot="append" icon="el-icon-s-promotion">发送</el-button>
+          </el-input>
+        </div>
       </div>
     </div>
 
@@ -57,7 +66,8 @@ export default {
         }]
       },
       users: [],
-      playerChange: true
+      playerChange: true,
+      inputContent: ''
     }
   },
   created() {
@@ -74,8 +84,6 @@ export default {
       this.$socket.emit('init');
     },
     sendUserList(data) {
-      console.log('123131321321')
-      console.log(data)
       this.users = data;
     },
     //监听发送的sdp事件
@@ -262,14 +270,58 @@ export default {
 
   padding: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
+}
 
+.camera-right-top-title {
+  display: inline-block;
+  font: 18px large;
+  margin-bottom: 10px;
+}
+
+.user-line {
+  display: flex;
+
+  height: 30px;
+  line-height: 30px;
+  border-bottom: 1px solid #DCDCDC;
+}
+
+.user-id {
+  flex: 5;
+  font: 14px Base;
+}
+
+.connect-btn {
+  position: relative;
+  bottom: 5px;
+  flex: 2;
 }
 
 .camera-right-bottom {
   flex: 4;
 
   padding: 10px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  display: flex;
+  position: relative;
+}
+
+.chat-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 50px;
+  border: 1px solid #DCDCDC;
+  border-radius: 5px;
+  margin: 5px;
+}
+
+.input-content{
+  position: absolute;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
 }
 
 .makeSmall {

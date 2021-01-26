@@ -21,12 +21,15 @@ let num = 0
 
 io.on('connect', (socket) => {
 
-    console.log(socket.id + '进入系统');
-
     //用户进入系统
     socket.on('init', () => {
         onlinePersonNum++;
+        let userList = [];
+        for (let key in io.sockets.connected) {
+            userList.push(key)
+        }
         io.sockets.emit('UpdateOnlineNum', onlinePersonNum);
+        io.sockets.emit('sendUserList', userList)
         if (io.sockets.connected[socket.id]) {
             io.sockets.connected[socket.id].emit('getRoomsInfo', roomsInfo)
         }
@@ -79,11 +82,9 @@ io.on('connect', (socket) => {
     //离开房间
 
 
-
-
     //sdp 消息的转发
     socket.on('sdp', (data) => {
-        console.log(data.description);
+        console.log(data.to)
         //console.log('sdp:  ' + data.sender + '   to:' + data.to);
         socket.to(data.to).emit('sdp', {
             description: data.description,
@@ -94,13 +95,13 @@ io.on('connect', (socket) => {
 
     //candidates 消息的转发
     socket.on('iceCandidates', (data) => {
-        console.log('ice candidates:  ');
-        console.log(data);
+        console.log(data.to);
         socket.to(data.to).emit('iceCandidates', {
             candidate: data.candidate,
             sender: data.sender
         });
     });
+
 
 });
 

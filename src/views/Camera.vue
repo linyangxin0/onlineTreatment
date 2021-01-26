@@ -2,10 +2,12 @@
   <div class="about">
     <div v-for="item in users">
       <span>{{ item }}</span>
-      <button @click="StartCall(item,true)">通话</button>
+      <button @click="StartCall(item,true)"
+              v-if="item !== socketId">通话
+      </button>
     </div>
     <video ref="localVideoElm" class="videoPlayer" autoplay></video>
-    <video ref="remoteVideo" class="videoPlayer" autoplay></video>
+    <video ref="remoteVideoElm" class="videoPlayer" autoplay></video>
   </div>
 </template>
 
@@ -16,6 +18,7 @@ export default {
   name: "Camera",
   data() {
     return {
+      socketId: '',
       localStream: null,
       pc: [],
       iceServer: {
@@ -33,9 +36,9 @@ export default {
     }
   },
   created() {
+    this.$socket.emit('init');
     this.$socket.emit('getUserList')
-    console.log(navigator)
-
+    this.socketId = this.$socket.id
   },
   mounted() {
     this.InitCamera();
@@ -43,35 +46,12 @@ export default {
   },
   sockets: {
     connect() {
-      this.$socket.emit('init', {
-        sender: this.$socket.id,
-        msg: 'hello world'
-      });
+      this.$socket.emit('init');
     },
     sendUserList(data) {
+      console.log('123131321321')
+      console.log(data)
       this.users = data;
-    },
-    needConnect(data) {
-      console.log(data);
-      //创建新的li并添加到用户列表中
-
-      let li = $('<li></li>').text(data.sender).attr('user-id', data.sender);
-      $('#user-list').append(li);
-      //同时创建一个按钮
-      let button = $('<button class="call">通话</button>');
-      button.appendTo(li);
-      //监听按钮的点击事件, 这是个demo 需要添加很多东西，比如不能重复拨打已经连接的用户
-      $(button).click(function () {
-        //$(this).parent().attr('user-id')
-        console.log($(this).parent().attr('user-id'));
-        //点击时，开启对该用户的通话
-        this.StartCall($(this).parent().attr('user-id'), true);
-      });
-
-      this.$socket.emit('ok we connect', {
-        receiver: data.sender,
-        sender: this.$socket.id
-      });
     },
     //监听发送的sdp事件
     sdp(data) {
@@ -85,7 +65,7 @@ export default {
         this.pc[data.sender].setRemoteDescription(desc).then(() => {
 
           this.pc[data.sender].createAnswer().then((answer) => {
-            return pc[data.sender].setLocalDescription(answer);
+            return this.pc[data.sender].setLocalDescription(answer);
           }).then(() => {
             this.$socket.emit('sdp', {
               type: 'video-answer',
@@ -103,7 +83,7 @@ export default {
     },
     //如果是ice candidates的协商信息
     iceCandidates(data) {
-      console.log('ice candidate: ' + data.candidate);
+      console.log(data)
       //{ candidate: candidate, to: partnerName, sender: socketID }
       //如果ice candidate非空（当candidate为空时，那么本次协商流程到此结束了）
       if (data.candidate) {
@@ -193,7 +173,7 @@ export default {
       }
       //当需要你通过信令服务器将一个ICE候选发送给另一个对等端时，本地ICE层将会调用你的 icecandidate 事件处理程序。有关更多信息，请参阅Sending ICE candidates 以查看此示例的代码。
       this.pc[parterName].onicecandidate = ({candidate}) => {
-        this.$socket.emit('ice candidates', {
+        this.$socket.emit('iceCandidates', {
           candidate: candidate,
           to: parterName,
           sender: this.$socket.id
@@ -202,19 +182,21 @@ export default {
       //当向连接中添加磁道时，track 事件的此处理程序由本地WebRTC层调用。例如，可以将传入媒体连接到元素以显示它。详见 Receiving new streams 。
       this.pc[parterName].ontrack = (ev) => {
         let str = ev.streams[0];
+        // if (document.getElementById(`${parterName}-video`)) {
+        //   document.getElementById(`${parterName}-video`).srcObject = str;
+        // } else {
+        // let newVideo = document.createElement('video');
+        // newVideo.id = `${parterName}-video`;
+        // newVideo.autoplay = true;
+        // newVideo.controls = true;
+        // //newVideo.className = 'remote-video';
+        // newVideo.srcObject = str;
+        //
+        // document.getElementById('videos').appendChild(newVideo);
 
-        if (document.getElementById(`${parterName}-video`)) {
-          document.getElementById(`${parterName}-video`).srcObject = str;
-        } else {
-          let newVideo = document.createElement('video');
-          newVideo.id = `${parterName}-video`;
-          newVideo.autoplay = true;
-          newVideo.controls = true;
-          //newVideo.className = 'remote-video';
-          newVideo.srcObject = str;
-
-          document.getElementById('videos').appendChild(newVideo);
-        }
+        // this.localStream = stream;
+        this.$refs.remoteVideoElm.srcObject = str;
+        // }
       }
     }
   },

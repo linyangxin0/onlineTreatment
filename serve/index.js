@@ -12,12 +12,25 @@ let num = 0
 
 io.on('connect', (socket) => {
 
+    console.log(socket.id + '进入系统');
+
     //用户进入系统
     socket.on('init', () => {
         onlinePersonNum++;
         io.sockets.emit('UpdateOnlineNum', onlinePersonNum);
         if (io.sockets.connected[socket.id]) {
             io.sockets.connected[socket.id].emit('getRoomsInfo', roomsInfo)
+        }
+    })
+
+    //返回所有已连接用户
+    socket.on('getUserList', () => {
+        if (io.sockets.connected[socket.id]) {
+            let userList = [];
+            for (let key in io.sockets.connected){
+                userList.push(key)
+            }
+            io.sockets.connected[socket.id].emit('sendUserList', userList)
         }
     })
 
@@ -57,6 +70,27 @@ io.on('connect', (socket) => {
     //离开房间
 
 
+    //sdp 消息的转发
+    socket.on('sdp', (data) => {
+        console.log('sdp');
+        console.log(data.description);
+        //console.log('sdp:  ' + data.sender + '   to:' + data.to);
+        socket.to(data.to).emit('sdp', {
+            description: data.description,
+            sender: data.sender
+        });
+    });
+
+
+    //candidates 消息的转发
+    socket.on('iceCandidates', (data) => {
+        console.log('ice candidates:  ');
+        console.log(data);
+        socket.to(data.to).emit('iceCandidates', {
+            candidate: data.candidate,
+            sender: data.sender
+        });
+    });
 
 });
 

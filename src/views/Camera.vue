@@ -281,19 +281,17 @@ export default {
 .user-line {
   display: flex;
 
-  height: 30px;
-  line-height: 30px;
+  height: 35px;
   border-bottom: 1px solid #DCDCDC;
 }
 
 .user-id {
   flex: 5;
   font: 14px Base;
+  line-height: 35px;
 }
 
 .connect-btn {
-  position: relative;
-  bottom: 5px;
   flex: 2;
 }
 

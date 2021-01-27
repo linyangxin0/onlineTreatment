@@ -8,9 +8,9 @@
 
       </div>
     </div>
-    <div class="home-right">
+<!--    <div class="home-right">-->
 
-    </div>
+<!--    </div>-->
 
 
     <input v-model="roomName">

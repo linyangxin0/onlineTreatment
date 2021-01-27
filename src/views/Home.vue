@@ -39,14 +39,17 @@
           房间列表
         </span>
       </div>
-      <div v-for="item in rooms" class="home-right-content">
-        <div class="home-right-content-room-name">
-          <span>{{ item.roomName }}</span>
-        </div>
-        <div class="home-right-content-enter-btn">
-          <el-button @click="enterRoom(item)" size="mini">进入房间</el-button>
+      <div class="home-right-bottom">
+        <div v-for="item in rooms" class="home-right-content">
+          <div class="home-right-content-room-name">
+            <span>{{ item.roomName }}</span>
+          </div>
+          <div class="home-right-content-enter-btn">
+            <el-button @click="enterRoom(item)" size="mini">进入房间</el-button>
+          </div>
         </div>
       </div>
+
     </div>
   </div>
 </template>
@@ -99,8 +102,17 @@ export default {
 </script>
 
 <style scoped>
+/*隐藏chrome下的滚动条*/
+::-webkit-scrollbar {
+  display: none; /* Chrome Safari */
+}
+
 .home {
-  height: 100vh;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
   margin: 20px;
   display: flex;
 }
@@ -140,7 +152,7 @@ export default {
   text-align: center;
 }
 
-.home-left-bottom-center{
+.home-left-bottom-center {
   margin-top: 50px;
   text-align: center;
   font: 50px Extra large;
@@ -174,6 +186,8 @@ export default {
   top: 90px;
   margin: 0 30px 30px 30px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  overflow-y: scroll;
+
 }
 
 
@@ -182,6 +196,7 @@ export default {
   margin: 30px;
   padding: 30px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 
 .home-right-title {
@@ -189,6 +204,17 @@ export default {
   font-weight: 700;
   text-align: center;
   margin-bottom: 30px;
+}
+
+.home-right-bottom {
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  right: 30px;
+  top: 70px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+
+  overflow-y: scroll;
 }
 
 .home-right-content {

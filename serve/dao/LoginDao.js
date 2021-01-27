@@ -9,10 +9,10 @@ let connection = mysql.createConnection({
 
 connection.connect();
 
-module.exports.testDao = function () {
-    connection.query('select * from user', function (error, results, fields) {
+module.exports.userLogin = function (account, callback) {
+    return connection.query('select * from user where account=?', [account], function (error, results, fields) {
         if (error) throw error;
-        console.log(results);
+        callback(results)
     });
 }
 

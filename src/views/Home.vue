@@ -9,7 +9,7 @@
       </div>
     </div>
     <div>
-      当前在线人数：{{onlineNum}}
+      当前在线人数：{{ onlineNum }}
     </div>
   </div>
 </template>
@@ -23,8 +23,12 @@ export default {
     return {
       roomName: '',
       rooms: [],
-      onlineNum: 0
+      onlineNum: 0,
+      userInfo: null
     }
+  },
+  created() {
+    this.userInfo = this.$route.query.userInfo
   },
   methods: {
     createRoom() {

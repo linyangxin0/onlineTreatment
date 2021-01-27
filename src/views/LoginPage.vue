@@ -6,14 +6,23 @@
       </div>
       <div class="login-input-content">
         <span class="login-input-text">账号：</span>
-        <el-input class="login-input"></el-input>
+        <el-input class="login-input"
+                  clearable
+                  v-model="account"
+                  placeholder="account"
+                  prefix-icon="el-icon-user-solid"></el-input>
       </div>
       <div class="login-input-content">
         <span class="login-input-text">密码：</span>
-        <el-input class="login-input"></el-input>
+        <el-input class="login-input"
+                  prefix-icon="el-icon-edit"
+                  placeholder="password"
+                  v-model="password"
+                  type="password"
+                  clearable></el-input>
       </div>
       <div class="login-bottom">
-        <el-button class="login-btn" type="success">登录</el-button>
+        <el-button class="login-btn" type="success" @click="login">登录</el-button>
         <el-button class="login-btn" type="info">注册</el-button>
       </div>
 
@@ -22,8 +31,40 @@
 </template>
 
 <script>
+import {userLogin} from "@/request/login";
+
 export default {
-  name: "LoginPage"
+  name: "LoginPage",
+  data() {
+    return {
+      account: '',
+      password: ''
+    }
+  },
+  methods: {
+    login() {
+      if (this.account.trim() === '' || this.password.trim() === '') {
+        this.$message.error('用户名或密码不能为空');
+      } else {
+        userLogin(this.account, this.password).then(res => {
+          if (res.data) {
+            this.$message({
+              message: '登陆成功',
+              type: 'success'
+            });
+            this.$router.push({
+              path: '/',
+              query: {
+                userInfo:res
+              }
+            })
+          } else {
+            this.$message.error('用户名或密码错误');
+          }
+        });
+      }
+    }
+  }
 }
 </script>
 
@@ -66,7 +107,7 @@ export default {
 
   font: 18px Extra large;
   font-weight: 700;
-  color:#303133 ;
+  color: #303133;
 }
 
 .login-input {

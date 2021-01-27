@@ -1,5 +1,18 @@
 <template>
   <div class="home">
+    <div class="home-left">
+      <div class="home-left-top">
+
+      </div>
+      <div class="home-left-bottom">
+
+      </div>
+    </div>
+    <div class="home-right">
+
+    </div>
+
+
     <input v-model="roomName">
     <button @click="createRoom">创建房间</button>
     <div v-for="item in rooms">

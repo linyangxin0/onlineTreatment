@@ -2,27 +2,51 @@
   <div class="home">
     <div class="home-left">
       <div class="home-left-top">
-
+        <div><span class="home-left-top-title">个人信息：</span></div>
+        <div><span class="home-left-top-info">用户名：{{ userName }}</span></div>
+        <div><span class="home-left-top-info">账 户：{{ account }}</span></div>
       </div>
+
       <div class="home-left-bottom">
-
+        <div class="home-left-bottom-top">
+          <span>当前在线人数：</span>
+        </div>
+        <div class="home-left-bottom-center">
+          <span>
+            {{ onlineNum }}
+          </span>
+        </div>
+        <div class="home-left-bottom-bottom">
+          <el-input placeholder="请输入房间名" v-model="roomName">
+            <el-button slot="append" icon="el-icon-s-home" @click="createRoom">创建房间</el-button>
+          </el-input>
+        </div>
       </div>
     </div>
-<!--    <div class="home-right">-->
 
-<!--    </div>-->
-
-
-    <input v-model="roomName">
-    <button @click="createRoom">创建房间</button>
-    <div v-for="item in rooms">
-      <div>
-        <span>{{ item.roomName }}</span>
-        <button @click="enterRoom(item)">进入房间</button>
+    <div class="home-center">
+      <div class="home-center-title">
+        <span>当前在线</span>
+      </div>
+      <div class="home-center-content">
+        1
       </div>
     </div>
-    <div>
-      当前在线人数：{{ onlineNum }}
+
+    <div class="home-right">
+      <div class="home-right-title">
+        <span>
+          房间列表
+        </span>
+      </div>
+      <div v-for="item in rooms" class="home-right-content">
+        <div class="home-right-content-room-name">
+          <span>{{ item.roomName }}</span>
+        </div>
+        <div class="home-right-content-enter-btn">
+          <el-button @click="enterRoom(item)" size="mini">进入房间</el-button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -37,11 +61,13 @@ export default {
       roomName: '',
       rooms: [],
       onlineNum: 0,
-      userInfo: null
+      userName: '',
+      account: ''
     }
   },
   created() {
-    this.userInfo = this.$route.query.userInfo
+    this.userName = localStorage.getItem('userName')
+    this.account = localStorage.getItem('account')
   },
   methods: {
     createRoom() {
@@ -71,3 +97,114 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.home {
+  height: 100vh;
+  margin: 20px;
+  display: flex;
+}
+
+.home-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.home-left-top {
+  flex: 1;
+  margin: 30px;
+  padding: 30px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)
+}
+
+.home-left-top-title {
+  font: 20px Extra large;
+  font-weight: 700;
+}
+
+.home-left-top-info {
+  font: 18px large;
+}
+
+.home-left-bottom {
+  flex: 2;
+  margin: 30px;
+  padding: 30px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.home-left-bottom-top {
+  font: 18px Extra large;
+  text-align: center;
+}
+
+.home-left-bottom-center{
+  margin-top: 50px;
+  text-align: center;
+  font: 50px Extra large;
+  font-weight: 700;
+}
+
+.home-left-bottom-bottom {
+  position: absolute;
+  bottom: 50px;
+}
+
+.home-center {
+  flex: 1;
+  margin: 30px 0;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.home-center-title {
+  padding: 30px;
+  text-align: center;
+  font: 20px Extra large;
+  font-weight: 700;
+}
+
+.home-center-content {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 90px;
+  margin: 0 30px 30px 30px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+}
+
+
+.home-right {
+  flex: 1;
+  margin: 30px;
+  padding: 30px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+}
+
+.home-right-title {
+  font: 20px Extra large;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.home-right-content {
+  display: flex;
+  margin: 10px;
+  height: 30px;
+  border-bottom: #DCDCDC 1px solid;
+}
+
+.home-right-content-room-name {
+  line-height: 30px;
+  text-align: center;
+  flex: 2;
+}
+
+.home-right-content-enter-btn {
+  flex: 1;
+}
+</style>

@@ -22,7 +22,7 @@
         <div v-for="item in users" class="user-line">
           <span class="user-id">{{ item }}</span>
           <div class="connect-btn">
-            <el-button icon="el-icon-phone" size="mini" @click="StartCall(item,true)"
+            <el-button type="success" icon="el-icon-phone" size="mini" @click="StartCall(item,true)"
                        v-if="item !== socketId">通话
             </el-button>
           </div>
@@ -35,7 +35,7 @@
         </div>
         <div class="input-content">
           <el-input placeholder="请输入..." v-model="inputContent">
-            <el-button slot="append" icon="el-icon-s-promotion">发送</el-button>
+            <el-button type="info" slot="append" icon="el-icon-s-promotion">发送</el-button>
           </el-input>
         </div>
       </div>

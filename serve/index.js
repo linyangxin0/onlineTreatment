@@ -1,7 +1,13 @@
 let express = require('express');
 let app = express();
-let http = require('http').Server(app);
+// let http = require('http').Server(app);
 
+
+//引入controller
+require('./controllsers/LoginController')(app);
+
+
+//配置https
 var fs = require('fs');
 let sslOptions = {
     key: fs.readFileSync('C:/privkey.key'),//里面的文件替换成你生成的私钥
@@ -19,6 +25,7 @@ let roomsInfo = []
 //房间id
 let num = 0
 
+//socket.io连接
 io.on('connect', (socket) => {
 
     //用户进入系统

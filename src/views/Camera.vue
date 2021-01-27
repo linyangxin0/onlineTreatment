@@ -315,7 +315,7 @@ export default {
   margin: 5px;
 }
 
-.input-content{
+.input-content {
   position: absolute;
   left: 5px;
   right: 5px;

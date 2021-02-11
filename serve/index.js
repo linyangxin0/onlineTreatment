@@ -112,7 +112,19 @@ io.on('connect', (socket) => {
 
 
     //离开房间
-
+    socket.on('exitRoom', (data) => {
+        socket.leave(data, () => {
+            roomsInfo.forEach((item) => {
+                if (item.roomId + '' === data + '') {
+                    item.peoples = item.peoples.filter(i => i + '' !== socket.id + '');
+                    if (item.peoples.length === 0) {
+                        roomsInfo = roomsInfo.filter(j => j !== item)
+                    }
+                    io.sockets.emit('updateRoomList', roomsInfo)
+                }
+            })
+        })
+    })
 
     //sdp 消息的转发
     socket.on('sdp', (data) => {

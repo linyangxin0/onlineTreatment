@@ -103,6 +103,12 @@ export default {
     updateOnlineNum(res) {
       this.onlineNum = res
     },
+    exitSuccess(){
+      this.$message({
+        message: '退出房间',
+        type: 'success'
+      });
+    }
   }
 }
 </script>

@@ -83,12 +83,14 @@ export default {
     this.InitCamera();
     this.pc.push(this.$socket.id);
   },
+  beforeDestroy() {
+    this.$socket.emit('exitRoom',this.roomId)
+  },
   sockets: {
     connect() {
       this.$socket.emit('init');
     },
     sendRoomInfo(data){
-      console.log(data.peoples)
       this.users = data.peoples;
     },
     //监听发送的sdp事件

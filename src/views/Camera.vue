@@ -86,6 +86,9 @@ export default {
     }
   },
   created() {
+    //监听刷新
+    window.addEventListener('beforeunload', e => this.refresh(e))
+
     this.$socket.emit('init');
     this.socketId = this.$socket.id
     this.roomId = this.$route.params.roomId
@@ -99,6 +102,7 @@ export default {
   },
   beforeDestroy() {
     this.$socket.emit('exitRoom', this.roomId)
+    window.removeEventListener('beforeunload', e => this.refresh(e))
   },
   sockets: {
     connect() {
@@ -150,6 +154,9 @@ export default {
     }
   },
   methods: {
+    refresh() {
+      this.$socket.emit('exitRoom', this.roomId)
+    },
     //初始化摄像头
     InitCamera() {
       if (this.canGetUserMediaUse()) {

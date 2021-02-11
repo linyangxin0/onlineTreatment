@@ -28,9 +28,10 @@ let num = 0
 //socket.io连接
 io.on('connect', (socket) => {
 
+    onlinePersonNum++;
+
     //用户进入系统
     socket.on('init', () => {
-        onlinePersonNum++;
         let userList = [];
         for (let key in io.sockets.connected) {
             userList.push(key)

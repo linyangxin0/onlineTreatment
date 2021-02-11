@@ -29,7 +29,9 @@
         <span>当前在线</span>
       </div>
       <div class="home-center-content">
-        1
+        <div v-for="item in userList" class="home-center-content-list">
+          {{ item }}
+        </div>
       </div>
     </div>
 
@@ -65,13 +67,15 @@ export default {
       rooms: [],
       onlineNum: 0,
       userName: '',
-      account: ''
+      account: '',
+      userList: []
     }
   },
   created() {
     this.userName = localStorage.getItem('userName')
     this.account = localStorage.getItem('account')
     this.$socket.emit('getSysInfo')
+    this.$socket.emit('getUserList')
   },
   methods: {
     createRoom() {
@@ -103,11 +107,14 @@ export default {
     updateOnlineNum(res) {
       this.onlineNum = res
     },
-    exitSuccess(){
+    exitSuccess() {
       this.$message({
         message: '退出房间',
         type: 'success'
       });
+    },
+    sendUserList(res) {
+      this.userList = res;
     }
   }
 }
@@ -199,7 +206,12 @@ export default {
   margin: 0 30px 30px 30px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   overflow-y: scroll;
+}
 
+.home-center-content-list {
+  margin:10px;
+  padding: 0 30px;
+  border-bottom: 1px solid #DCDCDC;
 }
 
 

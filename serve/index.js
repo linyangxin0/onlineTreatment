@@ -36,7 +36,6 @@ io.on('connect', (socket) => {
             userList.push(key)
         }
         io.sockets.emit('updateOnlineNum', onlinePersonNum);
-        io.sockets.emit('sendUserList', userList)
         if (io.sockets.connected[socket.id]) {
             io.sockets.connected[socket.id].emit('getRoomsInfo', roomsInfo)
         }
@@ -45,7 +44,6 @@ io.on('connect', (socket) => {
 
     //返回所有已连接用户
     socket.on('getUserList', () => {
-        // console.log(io.to())
         if (io.sockets.connected[socket.id]) {
             let userList = [];
             for (let key in io.sockets.connected) {
@@ -57,10 +55,11 @@ io.on('connect', (socket) => {
 
     //返回当前房间的成员
     socket.on('getRoomUsers', (data) => {
-        console.log('------------------------')
-        console.log(Object.keys(socket.rooms))
-        // console.log(io.sockets.clients(data.roomId))
-
+        roomsInfo.forEach((item) => {
+            if (item.roomId + '' === data.roomId + '') {
+                io.to(item.roomId).emit('sendRoomInfo', item);
+            }
+        })
     })
 
     //用户退出系统

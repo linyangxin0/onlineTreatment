@@ -94,7 +94,6 @@ export default {
       this.rooms = res
     },
     enterRoomSuccess(res) {
-      console.log(res)
       this.$message({
         message: '成功创建房间',
         type: 'success'

@@ -87,8 +87,9 @@ export default {
     connect() {
       this.$socket.emit('init');
     },
-    sendUserList(data) {
-      this.users = data;
+    sendRoomInfo(data){
+      console.log(data.peoples)
+      this.users = data.peoples;
     },
     //监听发送的sdp事件
     sdp(data) {

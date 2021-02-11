@@ -1,6 +1,6 @@
 let express = require('express');
 let app = express();
-// let http = require('http').Server(app);
+let http = require('http').Server(app);
 
 
 //引入controller
@@ -8,7 +8,7 @@ require('./controllsers/LoginController')(app);
 
 
 //配置https
-var fs = require('fs');
+let fs = require('fs');
 let sslOptions = {
     key: fs.readFileSync('C:/privkey.key'),//里面的文件替换成你生成的私钥
     cert: fs.readFileSync('C:/cacert.pem')//里面的文件替换成你生成的证书
@@ -35,12 +35,13 @@ io.on('connect', (socket) => {
         for (let key in io.sockets.connected) {
             userList.push(key)
         }
-        io.sockets.emit('UpdateOnlineNum', onlinePersonNum);
+        io.sockets.emit('updateOnlineNum', onlinePersonNum);
         io.sockets.emit('sendUserList', userList)
         if (io.sockets.connected[socket.id]) {
             io.sockets.connected[socket.id].emit('getRoomsInfo', roomsInfo)
         }
     })
+
 
     //返回所有已连接用户
     socket.on('getUserList', () => {
@@ -56,7 +57,7 @@ io.on('connect', (socket) => {
     //用户退出系统
     socket.on('disconnect', () => {
         onlinePersonNum--;
-        socket.broadcast.emit('UpdateOnlineNum', onlinePersonNum)
+        socket.broadcast.emit('updateOnlineNum', onlinePersonNum)
     })
 
     //创建房间
@@ -69,9 +70,11 @@ io.on('connect', (socket) => {
         }
         roomsInfo.push(room)
         socket.join(room.roomId)
+        io.sockets.emit('enterRoomSuccess', roomsInfo)
         //广播通知所有人
         io.sockets.emit('updateRoomList', roomsInfo)
     })
+
 
     //加入房间
     socket.on('enterRoom', (data) => {
@@ -86,12 +89,23 @@ io.on('connect', (socket) => {
         })
     })
 
+
+    //获取当前系统信息
+    socket.on('getSysInfo', () => {
+        //通知当前请求人
+        if (io.sockets.connected[socket.id]) {
+            io.sockets.connected[socket.id].emit('updateRoomList', roomsInfo)
+            io.sockets.connected[socket.id].emit('updateOnlineNum', onlinePersonNum);
+        }
+    })
+
+
     //离开房间
 
 
     //sdp 消息的转发
     socket.on('sdp', (data) => {
-        console.log(data.to)
+        // console.log(data.to)
         //console.log('sdp:  ' + data.sender + '   to:' + data.to);
         socket.to(data.to).emit('sdp', {
             description: data.description,
@@ -102,7 +116,6 @@ io.on('connect', (socket) => {
 
     //candidates 消息的转发
     socket.on('iceCandidates', (data) => {
-        console.log(data.to);
         socket.to(data.to).emit('iceCandidates', {
             candidate: data.candidate,
             sender: data.sender

@@ -116,7 +116,6 @@ export default {
     },
     //如果是ice candidates的协商信息
     iceCandidates(data) {
-      console.log(data)
       //{ candidate: candidate, to: partnerName, sender: socketID }
       //如果ice candidate非空（当candidate为空时，那么本次协商流程到此结束了）
       if (data.candidate) {

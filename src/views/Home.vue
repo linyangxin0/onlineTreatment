@@ -71,17 +71,20 @@ export default {
   created() {
     this.userName = localStorage.getItem('userName')
     this.account = localStorage.getItem('account')
+    this.$socket.emit('getSysInfo')
   },
   methods: {
     createRoom() {
       this.$socket.emit('createRoom', {
         roomName: this.roomName
       })
+      this.$router.push('/camera')
     },
     enterRoom(item) {
       this.$socket.emit('enterRoom', {
         roomId: item.roomId
       })
+      this.$router.push('/camera')
     }
   },
   sockets: {
@@ -94,7 +97,7 @@ export default {
     enterRoomSuccess(res) {
       console.log(res)
     },
-    UpdateOnlineNum(res) {
+    updateOnlineNum(res) {
       this.onlineNum = res
     },
   }

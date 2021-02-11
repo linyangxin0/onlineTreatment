@@ -6,7 +6,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/api/': {
-        target: 'https://192.168.21.102:8088/',
+        target: 'https://192.168.21.105:8088/',
         changeOrigin: true,
         pathRewrite: {
           '^/api/': '',
@@ -14,8 +14,8 @@ module.exports = {
       },
     },
     https: {
-      key: fs.readFileSync(path.join(__dirname, './cert/privatekey.pem')),
-      cert: fs.readFileSync(path.join(__dirname, './cert/certificate.pem'))
+      key: fs.readFileSync(path.join('C:/privkey.key')),
+      cert: fs.readFileSync(path.join('C:/cacert.pem'))
     }
   },
 };

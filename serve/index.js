@@ -45,6 +45,7 @@ io.on('connect', (socket) => {
 
     //返回所有已连接用户
     socket.on('getUserList', () => {
+        // console.log(io.to())
         if (io.sockets.connected[socket.id]) {
             let userList = [];
             for (let key in io.sockets.connected) {

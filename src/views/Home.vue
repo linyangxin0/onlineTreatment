@@ -78,13 +78,14 @@ export default {
       this.$socket.emit('createRoom', {
         roomName: this.roomName
       })
-      this.$router.push('/camera')
+      console.log(this.roomName)
+      this.$router.push(`/camera/${this.roomName}`);
     },
     enterRoom(item) {
       this.$socket.emit('enterRoom', {
         roomId: item.roomId
       })
-      this.$router.push('/camera')
+      this.$router.push('/camera/' + item.roomId)
     }
   },
   sockets: {

@@ -67,13 +67,15 @@ export default {
       },
       users: [],
       playerChange: true,
-      inputContent: ''
+      inputContent: '',
+      roomName: ''
     }
   },
   created() {
     this.$socket.emit('init');
     this.$socket.emit('getUserList')
     this.socketId = this.$socket.id
+    this.roomName = this.$route.params.roomName
   },
   mounted() {
     this.InitCamera();

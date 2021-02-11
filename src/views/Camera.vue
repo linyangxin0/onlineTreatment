@@ -157,6 +157,13 @@ export default {
     },
     getNewMessage(res) {
       this.chatMessage.push(res)
+    },
+    roomUnableEnter(){
+      this.$message({
+        message: '抱歉，房间不存在或不可进入！',
+        type: 'warning'
+      });
+      this.$router.replace('/home')
     }
   },
   methods: {

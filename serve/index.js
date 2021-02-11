@@ -56,8 +56,10 @@ io.on('connect', (socket) => {
 
     //返回当前房间的成员
     socket.on('getRoomUsers', (data) => {
+        let isContainRoom = false;
         roomsInfo.forEach((item) => {
             if (item.roomId + '' === data.roomId + '') {
+                isContainRoom = !isContainRoom;
                 if (item.peoples.indexOf(socket.id) === -1) {
                     item.peoples.push(socket.id)
                     item.peopleNum++;
@@ -66,6 +68,9 @@ io.on('connect', (socket) => {
                 io.to(item.roomId).emit('sendRoomInfo', item);
             }
         })
+        if (!isContainRoom) {
+            io.sockets.connected[socket.id].emit('roomUnableEnter')
+        }
     })
 
     //用户退出系统

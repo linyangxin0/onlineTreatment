@@ -11,6 +11,11 @@ const routes = [
     component: Home
   },
   {
+    path: '/home',
+    name: 'Home',
+    component: Home
+  },
+  {
     path: '/camera/:roomId',
     name: 'Camera',
     component: () => import('../views/Camera.vue')

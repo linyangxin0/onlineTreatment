@@ -58,6 +58,11 @@ io.on('connect', (socket) => {
     socket.on('getRoomUsers', (data) => {
         roomsInfo.forEach((item) => {
             if (item.roomId + '' === data.roomId + '') {
+                if (item.peoples.indexOf(socket.id) === -1) {
+                    item.peoples.push(socket.id)
+                    item.peopleNum++;
+                    socket.join(item.roomId)
+                }
                 io.to(item.roomId).emit('sendRoomInfo', item);
             }
         })
@@ -91,7 +96,7 @@ io.on('connect', (socket) => {
     //加入房间
     socket.on('enterRoom', (data) => {
         roomsInfo.forEach(function (item) {
-            if (item.roomId === data.roomId) {
+            if (item.roomId + '' === data.roomId + '') {
                 item.peopleNum += 1;
                 item.peoples.push(socket.id)
                 socket.join(item.roomId + '');
@@ -129,6 +134,7 @@ io.on('connect', (socket) => {
             roomsInfo.forEach((item) => {
                 if (item.roomId + '' === data + '') {
                     item.peoples = item.peoples.filter(i => i + '' !== socket.id + '');
+                    item.peopleNum--;
                     if (item.peoples.length === 0) {
                         roomsInfo = roomsInfo.filter(j => j !== item)
                     }

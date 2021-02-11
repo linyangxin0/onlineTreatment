@@ -86,12 +86,17 @@ export default {
     }
   },
   created() {
+    //检查登陆状态
+    if (!localStorage.getItem('userName') || !localStorage.getItem('account')) {
+      this.$router.replace('/404')
+    }
+
     //监听刷新
     window.addEventListener('beforeunload', e => this.refresh(e))
 
     this.$socket.emit('init');
-    this.socketId = this.$socket.id
-    this.roomId = this.$route.params.roomId
+    this.socketId = this.$socket.id;
+    this.roomId = this.$route.params.roomId;
 
     this.$socket.emit('getRoomUsers', {
       roomId: this.roomId

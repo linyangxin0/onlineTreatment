@@ -32,22 +32,13 @@
       <div class="camera-right-bottom">
         <div class="chat-content">
           <div class="chat-content-message" v-for="item in chatMessage">
-            <div v-if="item.sender===socketId" class="chat-content-message-left">
-              <div>
-                <span>{{ item.sender }}</span>
-                <span>{{ item.time }}</span>
+            <div class="chat-content-message-left">
+              <div class="chat-content-message-left-top">
+                <span class="chat-content-message-left-sender">{{ item.sender }}</span>
+                <span class="chat-content-message-left-time">{{ item.time }}</span>
               </div>
-              <div>
-                <span>{{ item.content }}</span>
-              </div>
-            </div>
-            <div v-if="item.sender!==socketId" class="chat-content-message-right">
-              <div>
-                <span>{{ item.sender }}</span>
-                <span>{{ item.time }}</span>
-              </div>
-              <div>
-                <span>{{ item.content }}</span>
+              <div class="chat-content-message-left-bottom">
+                <span class="chat-content-message-left-content" :class="{myOwnMessage:item.sender===socketId}">{{ item.content }}</span>
               </div>
             </div>
           </div>
@@ -365,6 +356,40 @@ export default {
   left: 5px;
   right: 5px;
   bottom: 5px;
+}
+
+.chat-content-message {
+  position: relative;
+}
+
+.chat-content-message-left-top {
+  margin-left: 10px;
+}
+
+.chat-content-message-left-sender {
+  display: inline-block;
+  font: 14px Base;
+}
+
+.chat-content-message-left-time {
+  margin-left: 15px;
+}
+
+.chat-content-message-left-bottom {
+  width: 350px;
+}
+
+.chat-content-message-left-content {
+  display: inline-block;
+  background-color: #EBEEF5;
+  padding: 8px;
+  margin: 5px 10px;
+  border-radius: 10px;
+}
+
+.myOwnMessage{
+  background-color: #67C23A;
+  color: aliceblue;
 }
 
 .makeSmall {

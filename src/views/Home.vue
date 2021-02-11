@@ -121,6 +121,7 @@ export default {
 </script>
 
 <style scoped>
+
 /*隐藏chrome下的滚动条*/
 ::-webkit-scrollbar {
   display: none; /* Chrome Safari */
@@ -209,7 +210,7 @@ export default {
 }
 
 .home-center-content-list {
-  margin:10px;
+  margin: 10px;
   padding: 0 30px;
   border-bottom: 1px solid #DCDCDC;
 }

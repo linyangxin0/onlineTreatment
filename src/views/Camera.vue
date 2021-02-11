@@ -22,7 +22,8 @@
         <div v-for="item in users" class="user-line">
           <span class="user-id">{{ item }}</span>
           <div class="connect-btn">
-            <el-button type="success" icon="el-icon-phone" size="mini" @click="StartCall(item,true)"
+            <el-button type="success" icon="el-icon-phone" size="mini"
+                       @click="StartCall(item,true)"
                        v-if="item !== socketId">通话
             </el-button>
           </div>
@@ -38,7 +39,8 @@
                 <span class="chat-content-message-left-time">{{ item.time }}</span>
               </div>
               <div class="chat-content-message-left-bottom">
-                <span class="chat-content-message-left-content" :class="{myOwnMessage:item.sender===socketId}">{{ item.content }}</span>
+                <span class="chat-content-message-left-content"
+                      :class="{myOwnMessage:item.sender===socketId}">{{ item.content }}</span>
               </div>
             </div>
           </div>
@@ -259,19 +261,22 @@ export default {
       }
     },
     sendMessage() {
-      let time = dateFormat('HH:MM', new Date());
-      this.$socket.emit('sendMessage', {
-        content: this.inputContent,
-        roomId: this.roomId,
-        time: time
-      });
-      this.inputContent = ''
+      if (this.inputContent.trim()) {
+        let time = dateFormat('HH:MM', new Date());
+        this.$socket.emit('sendMessage', {
+          content: this.inputContent,
+          roomId: this.roomId,
+          time: time
+        });
+        this.inputContent = ''
+      }
     }
   },
 }
 </script>
 
 <style scoped>
+
 .videoPlayer {
   width: 100%;
 }
@@ -284,6 +289,8 @@ export default {
   bottom: 0;
   display: flex;
   margin: 10px;
+  overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 .camera-left {
@@ -376,7 +383,7 @@ export default {
 }
 
 .chat-content-message-left-bottom {
-  width: 350px;
+  width: 400px;
 }
 
 .chat-content-message-left-content {
@@ -387,7 +394,7 @@ export default {
   border-radius: 10px;
 }
 
-.myOwnMessage{
+.myOwnMessage {
   background-color: #67C23A;
   color: aliceblue;
 }

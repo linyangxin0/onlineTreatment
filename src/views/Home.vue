@@ -78,14 +78,12 @@ export default {
       this.$socket.emit('createRoom', {
         roomName: this.roomName
       })
-      console.log(this.roomName)
-      this.$router.push(`/camera/${this.roomName}`);
     },
     enterRoom(item) {
       this.$socket.emit('enterRoom', {
         roomId: item.roomId
       })
-      this.$router.push('/camera/' + item.roomId)
+      this.$router.push(`/camera/${item.roomId}`);
     }
   },
   sockets: {
@@ -97,6 +95,11 @@ export default {
     },
     enterRoomSuccess(res) {
       console.log(res)
+      this.$message({
+        message: '成功创建房间',
+        type: 'success'
+      });
+      this.$router.push(`/camera/${res.roomId}`);
     },
     updateOnlineNum(res) {
       this.onlineNum = res

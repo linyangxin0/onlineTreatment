@@ -55,6 +55,14 @@ io.on('connect', (socket) => {
         }
     })
 
+    //返回当前房间的成员
+    socket.on('getRoomUsers', (data) => {
+        console.log('------------------------')
+        console.log(Object.keys(socket.rooms))
+        // console.log(io.sockets.clients(data.roomId))
+
+    })
+
     //用户退出系统
     socket.on('disconnect', () => {
         onlinePersonNum--;
@@ -70,8 +78,11 @@ io.on('connect', (socket) => {
             peoples: [socket.id]
         }
         roomsInfo.push(room)
-        socket.join(room.roomId)
-        io.sockets.emit('enterRoomSuccess', roomsInfo)
+        socket.join(room.roomId + '')
+        //通知创建房间发起者
+        if (io.sockets.connected[socket.id]) {
+            io.sockets.connected[socket.id].emit('enterRoomSuccess', room)
+        }
         //广播通知所有人
         io.sockets.emit('updateRoomList', roomsInfo)
     })
@@ -83,9 +94,9 @@ io.on('connect', (socket) => {
             if (item.roomId === data.roomId) {
                 item.peopleNum += 1;
                 item.peoples.push(socket.id)
-                socket.join(item.roomId);
+                socket.join(item.roomId + '');
                 // socket.broadcast.to(item.roomId).emit('enterRoomSuccess', roomsInfo)
-                io.sockets.emit('enterRoomSuccess', roomsInfo)
+                io.sockets.emit('enterRoomSuccess', item)
             }
         })
     })

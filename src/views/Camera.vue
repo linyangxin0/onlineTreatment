@@ -92,6 +92,7 @@ export default {
     this.$socket.emit('init');
     this.socketId = this.$socket.id
     this.roomId = this.$route.params.roomId
+
     this.$socket.emit('getRoomUsers', {
       roomId: this.roomId
     })

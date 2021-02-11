@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import {userLogin} from "@/request/login";
+import {userLogin} from "@/request/home";
 
 export default {
   name: "LoginPage",

@@ -5,6 +5,10 @@
         <div><span class="home-left-top-title">个人信息：</span></div>
         <div><span class="home-left-top-info">用户名：{{ userName }}</span></div>
         <div><span class="home-left-top-info">账 户：{{ account }}</span></div>
+        <div class="home-left-top-logout-btn">
+          <el-button size="small" @click="changePassword" type="info">修改密码</el-button>
+          <el-button size="small" @click="logout" type="danger">退出登录</el-button>
+        </div>
       </div>
 
       <div class="home-left-bottom">
@@ -72,6 +76,9 @@ export default {
     }
   },
   created() {
+    if (!localStorage.getItem('userName') || !localStorage.getItem('account')) {
+      this.$router.replace('/404')
+    }
     this.userName = localStorage.getItem('userName')
     this.account = localStorage.getItem('account')
     this.$socket.emit('getSysInfo')
@@ -88,6 +95,13 @@ export default {
         roomId: item.roomId
       })
       this.$router.push(`/camera/${item.roomId}`);
+    },
+    logout() {
+      localStorage.clear()
+      this.$router.replace('/login')
+    },
+    changePassword() {
+      console.log('修改密码')
     }
   },
   sockets: {
@@ -157,6 +171,10 @@ export default {
 
 .home-left-top-info {
   font: 18px large;
+}
+
+.home-left-top-logout-btn {
+  margin-top: 20px;
 }
 
 .home-left-bottom {

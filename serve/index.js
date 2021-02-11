@@ -111,6 +111,17 @@ io.on('connect', (socket) => {
         }
     })
 
+    //线上聊天部分
+    socket.on('sendMessage', (msg) => {
+        let res = {
+            roomId: msg.roomId,
+            content: msg.content,
+            sender: socket.id,
+            time: msg.time
+        }
+        io.to(msg.roomId).emit('getNewMessage', res);
+    })
+
 
     //离开房间
     socket.on('exitRoom', (data) => {

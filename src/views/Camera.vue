@@ -31,11 +31,30 @@
       <el-divider></el-divider>
       <div class="camera-right-bottom">
         <div class="chat-content">
-
+          <div class="chat-content-message" v-for="item in chatMessage">
+            <div v-if="item.sender===socketId" class="chat-content-message-left">
+              <div>
+                <span>{{ item.sender }}</span>
+                <span>{{ item.time }}</span>
+              </div>
+              <div>
+                <span>{{ item.content }}</span>
+              </div>
+            </div>
+            <div v-if="item.sender!==socketId" class="chat-content-message-right">
+              <div>
+                <span>{{ item.sender }}</span>
+                <span>{{ item.time }}</span>
+              </div>
+              <div>
+                <span>{{ item.content }}</span>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="input-content">
           <el-input placeholder="请输入..." v-model="inputContent">
-            <el-button type="info" slot="append" icon="el-icon-s-promotion">发送</el-button>
+            <el-button type="info" slot="append" icon="el-icon-s-promotion" @click="sendMessage">发送</el-button>
           </el-input>
         </div>
       </div>
@@ -46,6 +65,7 @@
 
 <script>
 
+import {dateFormat} from "@/utils/timeFormate";
 
 export default {
   name: "Camera",
@@ -68,7 +88,8 @@ export default {
       users: [],
       playerChange: true,
       inputContent: '',
-      roomId: ''
+      roomId: '',
+      chatMessage: []
     }
   },
   created() {
@@ -84,13 +105,13 @@ export default {
     this.pc.push(this.$socket.id);
   },
   beforeDestroy() {
-    this.$socket.emit('exitRoom',this.roomId)
+    this.$socket.emit('exitRoom', this.roomId)
   },
   sockets: {
     connect() {
       this.$socket.emit('init');
     },
-    sendRoomInfo(data){
+    sendRoomInfo(data) {
       this.users = data.peoples;
     },
     //监听发送的sdp事件
@@ -130,6 +151,9 @@ export default {
         //讲对方发来的协商信息保存
         this.pc[data.sender].addIceCandidate(candidate).catch(); //catch err function empty
       }
+    },
+    getNewMessage(res) {
+      this.chatMessage.push(res)
     }
   },
   methods: {
@@ -242,6 +266,15 @@ export default {
       if (data) {
         this.playerChange = !this.playerChange;
       }
+    },
+    sendMessage() {
+      let time = dateFormat('HH:MM', new Date());
+      this.$socket.emit('sendMessage', {
+        content: this.inputContent,
+        roomId: this.roomId,
+        time: time
+      });
+      this.inputContent = ''
     }
   },
 }
@@ -324,6 +357,7 @@ export default {
   border: 1px solid #DCDCDC;
   border-radius: 5px;
   margin: 5px;
+  overflow-y: scroll;
 }
 
 .input-content {

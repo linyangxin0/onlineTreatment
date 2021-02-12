@@ -29,9 +29,15 @@ module.exports = function (app) {
     })
 
     app.get('/userRegister', (req, res) => {
-        loginDao.userRegister(req.query.userName, req.query.account, req.query.password, (back) => {
-            if (back.affectedRows !== 0) {
-                res.send(true)
+        loginDao.selectUser(req.query.account, (firstBack) => {
+            if (firstBack.length !== 0) {
+                res.send(false)
+            } else {
+                loginDao.userRegister(req.query.userName, req.query.account, req.query.password, (secondBack) => {
+                    if (secondBack.affectedRows !== 0) {
+                        res.send(true)
+                    }
+                })
             }
         })
     })

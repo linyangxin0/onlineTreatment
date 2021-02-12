@@ -30,5 +30,12 @@ module.exports.userRegister = function (userName, account, password, callback) {
     })
 }
 
+module.exports.selectUser = function (account, callback) {
+    return connection.query('select * from user where account = ?', [account], function (error, results, fields) {
+        if (error) throw error;
+        callback(results)
+    })
+}
+
 
 

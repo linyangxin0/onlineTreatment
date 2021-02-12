@@ -8,11 +8,11 @@
     <div class="content">
       <div class="content-item">
         <span class="input-title">用户名：</span>
-        <el-input v-model="account" clearable prefix-icon="el-icon-user" class="input-content"></el-input>
+        <el-input v-model="userName" clearable prefix-icon="el-icon-user" class="input-content"></el-input>
       </div>
       <div class="content-item">
         <span class="input-title">账号：</span>
-        <el-input v-model="userName" clearable prefix-icon="el-icon-s-custom" class="input-content"></el-input>
+        <el-input v-model="account" clearable prefix-icon="el-icon-s-custom" class="input-content"></el-input>
       </div>
       <div class="content-item">
         <span class="input-title">密码：</span>
@@ -48,25 +48,50 @@ export default {
   },
   methods: {
     registerClick() {
-      userRegister(this.userName, this.account, this.secondPassword).then(res => {
-        if (res.data) {
+      if (this.userName && this.account && this.firstPassword && this.secondPassword) {
+        if (this.firstPassword === this.secondPassword) {
+          userRegister(this.userName, this.account, this.secondPassword).then(res => {
+            if (res.data) {
+              this.$message({
+                message: '注册成功',
+                type: 'success'
+              });
+              setTimeout(() => {
+                localStorage.clear();
+                this.$router.replace('/login')
+              }, 1000)
+            } else {
+              this.$message({
+                message: '注册失败：账号已存在',
+                type: 'warning'
+              });
+            }
+          })
+        } else {
           this.$message({
-            message: '注册成功',
-            type: 'success'
+            message: '两次密码输入不一致，请重新输入',
+            type: 'warning'
           });
-
-          setTimeout(() => {
-            localStorage.clear();
-            this.$router.replace('/login')
-          }, 1000)
         }
-      })
+      } else {
+        this.$message({
+          message: '输入为空！',
+          type: 'warning'
+        });
+      }
     },
     resetClick() {
-      this.account = '';
-      this.userName = '';
-      this.firstPassword = '';
-      this.secondPassword = '';
+      this.$confirm('是否清空当前输入?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'info',
+        center: true
+      }).then(() => {
+        this.account = '';
+        this.userName = '';
+        this.firstPassword = '';
+        this.secondPassword = '';
+      });
     }
   }
 }

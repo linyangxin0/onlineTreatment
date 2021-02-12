@@ -10,3 +10,13 @@ export function userLogin(account, password) {
     });
 }
 
+
+export function updatePassword(account, newPassword) {
+    return request({
+        url: '/updatePassword',
+        params: {
+            account,
+            newPassword
+        }
+    })
+}

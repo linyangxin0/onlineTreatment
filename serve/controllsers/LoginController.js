@@ -16,6 +16,18 @@ module.exports = function (app) {
             }
         })
     });
+
+    app.get('/updatePassword', (req, res) => {
+        loginDao.changePassword(req.query.account, req.query.newPassword, (back) => {
+            if (back.changedRows === 0) {
+                res.send(false)
+            } else {
+                res.send(true)
+            }
+        })
+
+    })
+
 }
 
 

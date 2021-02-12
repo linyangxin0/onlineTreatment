@@ -5,37 +5,42 @@ import Home from '../views/Home.vue'
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/home',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/camera/:roomId',
-    name: 'Camera',
-    component: () => import('../views/Camera.vue')
-  },
-  {
-    path: '/login',
-    name: 'LoginPage',
-    component: () => import('../views/LoginPage')
-  },
-  {
-    path: '/404',
-    name: '404',
-    component: () => import('../views/404')
-  }
+    {
+        path: '/',
+        name: 'Home',
+        component: Home
+    },
+    {
+        path: '/home',
+        name: 'Home',
+        component: Home
+    },
+    {
+        path: '/camera/:roomId',
+        name: 'Camera',
+        component: () => import('../views/Camera.vue')
+    },
+    {
+        path: '/login',
+        name: 'LoginPage',
+        component: () => import('../views/LoginPage')
+    },
+    {
+        path: '/404',
+        name: '404',
+        component: () => import('../views/404')
+    },
+    {
+        path: '/changePassword',
+        name: 'changePassword',
+        component: () => import('../views/changePassword')
+    }
 ]
 
 const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes
+    mode: 'history',
+    base: process.env.BASE_URL,
+    routes
 })
 
 export default router

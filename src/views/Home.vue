@@ -101,7 +101,7 @@ export default {
       this.$router.replace('/login')
     },
     changePassword() {
-      console.log('修改密码')
+      this.$router.push('/changePassword')
     }
   },
   sockets: {

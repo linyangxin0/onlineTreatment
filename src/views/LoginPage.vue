@@ -23,7 +23,7 @@
       </div>
       <div class="login-bottom">
         <el-button class="login-btn" type="success" @click="login">登录</el-button>
-        <el-button class="login-btn" type="info">注册</el-button>
+        <el-button class="login-btn" type="info" @click="register">注册</el-button>
       </div>
 
     </div>
@@ -53,14 +53,17 @@ export default {
               type: 'success'
             });
             this.$router.push('/')
-            localStorage.setItem('userName',res.data.name)
-            localStorage.setItem('account',res.data.account)
+            localStorage.setItem('userName', res.data.name)
+            localStorage.setItem('account', res.data.account)
 
           } else {
             this.$message.error('用户名或密码错误');
           }
         });
       }
+    },
+    register() {
+      this.$router.push('/register')
     }
   }
 }

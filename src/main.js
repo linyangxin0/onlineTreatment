@@ -13,13 +13,13 @@ Vue.use(ElementUI);
 Vue.config.productionTip = false
 
 Vue.use(new VueSocketIO({
-  debug: false,
-  connection: 'https://192.168.21.105:8088',
-  vuex: {
-    store,
-    actionPrefix: 'SOCKET_',
-    mutationPrefix: 'SOCKET_'
-  }
+    debug: false,
+    connection: 'https://192.168.21.103:8088',
+    vuex: {
+        store,
+        actionPrefix: 'SOCKET_',
+        mutationPrefix: 'SOCKET_'
+    }
 }))
 
 Vue.use(VueRouter);
@@ -39,7 +39,7 @@ VueRouter.prototype.replace = function push(location, onResolve, onReject) {
 
 
 new Vue({
-  router,
-  store,
-  render: h => h(App)
+    router,
+    store,
+    render: h => h(App)
 }).$mount('#app')

@@ -33,6 +33,9 @@
 </template>
 
 <script>
+
+import {userRegister} from "@/request/home";
+
 export default {
   name: "register",
   data() {
@@ -45,7 +48,19 @@ export default {
   },
   methods: {
     registerClick() {
-      console.log('注册')
+      userRegister(this.userName, this.account, this.secondPassword).then(res => {
+        if (res.data) {
+          this.$message({
+            message: '注册成功',
+            type: 'success'
+          });
+
+          setTimeout(() => {
+            localStorage.clear();
+            this.$router.replace('/login')
+          }, 1000)
+        }
+      })
     },
     resetClick() {
       this.account = '';
@@ -83,6 +98,7 @@ export default {
   width: 600px;
   height: 300px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .5);
+  border-radius: 20px;
   padding: 20px;
 
   position: absolute;

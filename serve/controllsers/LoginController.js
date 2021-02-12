@@ -17,6 +17,7 @@ module.exports = function (app) {
         })
     });
 
+    //修改密码
     app.get('/updatePassword', (req, res) => {
         loginDao.changePassword(req.query.account, req.query.newPassword, (back) => {
             if (back.changedRows === 0) {
@@ -25,7 +26,14 @@ module.exports = function (app) {
                 res.send(true)
             }
         })
+    })
 
+    app.get('/userRegister', (req, res) => {
+        loginDao.userRegister(req.query.userName, req.query.account, req.query.password, (back) => {
+            if (back.affectedRows !== 0) {
+                res.send(true)
+            }
+        })
     })
 
 }

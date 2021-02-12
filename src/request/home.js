@@ -20,3 +20,14 @@ export function updatePassword(account, newPassword) {
         }
     })
 }
+
+export function userRegister(userName, account, password) {
+    return request({
+        url: '/userRegister',
+        params: {
+            userName,
+            account,
+            password
+        }
+    })
+}

@@ -25,8 +25,8 @@
                   class="input-content"></el-input>
       </div>
       <div class="content-btn">
-        <el-button @click="registerClick" class="btn-item">注册</el-button>
-        <el-button @click="resetClick" class="btn-item">重置</el-button>
+        <el-button @click="registerClick" class="btn-item" type="success">注册</el-button>
+        <el-button @click="resetClick" class="btn-item" type="info">重置</el-button>
       </div>
     </div>
   </div>

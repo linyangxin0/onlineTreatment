@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Home from '../views/HomePage.vue'
 
 Vue.use(VueRouter)
 
@@ -18,7 +18,7 @@ const routes = [
     {
         path: '/camera/:roomId',
         name: 'Camera',
-        component: () => import('../views/Camera.vue')
+        component: () => import('../views/ChatRoomPage.vue')
     },
     {
         path: '/login',
@@ -28,17 +28,17 @@ const routes = [
     {
         path: '/404',
         name: '404',
-        component: () => import('../views/404')
+        component: () => import('../views/NotFountPage')
     },
     {
         path: '/changePassword',
         name: 'changePassword',
-        component: () => import('../views/ChangePassword')
+        component: () => import('../views/ChangePasswordPage')
     },
     {
         path: '/register',
         name: 'register',
-        component: () => import('../views/Register')
+        component: () => import('../views/RegisterPage')
     }
 ]
 

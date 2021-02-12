@@ -11,11 +11,12 @@ export function userLogin(account, password) {
 }
 
 
-export function updatePassword(account, newPassword) {
+export function updatePassword(account, oldPassword, newPassword) {
     return request({
         url: '/updatePassword',
         params: {
             account,
+            oldPassword,
             newPassword
         }
     })

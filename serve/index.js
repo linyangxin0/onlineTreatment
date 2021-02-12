@@ -4,7 +4,7 @@ let http = require('http').Server(app);
 
 
 //引入controller
-require('./controllsers/LoginController')(app);
+require('./controllsers/UserController')(app);
 
 
 //配置https

@@ -1,8 +1,8 @@
-let loginDao = require('../dao/LoginDao')
+let loginDao = require('../dao/UserDao')
 
 module.exports = function (app) {
 
-    //登录接口
+    //登录
     app.get('/login', async (req, res) => {
         await loginDao.userLogin(req.query.account, (back) => {
             if (back.length === 0) {
@@ -19,17 +19,32 @@ module.exports = function (app) {
 
     //修改密码
     app.get('/updatePassword', (req, res) => {
-        loginDao.changePassword(req.query.account, req.query.newPassword, (back) => {
-            if (back.changedRows === 0) {
-                res.send(false)
+        loginDao.selectUserByAccountAndPassword(req.query.account, req.query.oldPassword, (firstBack) => {
+            if (firstBack.length !== 0) {
+                loginDao.changePassword(req.query.account, req.query.newPassword, (secondBack) => {
+                    if (secondBack.changedRows === 0) {
+                        res.send({
+                            first: true,
+                            second: false
+                        })
+                    } else {
+                        res.send({
+                            first: true,
+                            second: true
+                        })
+                    }
+                })
             } else {
-                res.send(true)
+                res.send({
+                    first: false
+                })
             }
         })
     })
 
+    //用户注册
     app.get('/userRegister', (req, res) => {
-        loginDao.selectUser(req.query.account, (firstBack) => {
+        loginDao.selectUserByAccount(req.query.account, (firstBack) => {
             if (firstBack.length !== 0) {
                 res.send(false)
             } else {

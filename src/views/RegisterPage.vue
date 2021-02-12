@@ -34,7 +34,7 @@
 
 <script>
 
-import {userRegister} from "@/request/home";
+import {userRegister} from "@/request/user";
 
 export default {
   name: "register",

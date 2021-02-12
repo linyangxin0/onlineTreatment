@@ -297,6 +297,32 @@ export default {
 
 <style scoped>
 
+::-webkit-scrollbar {
+  width: 10px;
+  height: 1px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #606266;
+  background-image: -webkit-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.2) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.2) 50%,
+      rgba(255, 255, 255, 0.2) 75%,
+      transparent 75%,
+      transparent
+  );
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background: #ededed;
+  border-radius: 10px;
+}
+
 .videoPlayer {
   width: 100%;
 }
@@ -329,6 +355,7 @@ export default {
 
 .camera-right-top {
   flex: 1;
+  overflow-y: scroll;
 
   padding: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)

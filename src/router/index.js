@@ -33,12 +33,12 @@ const routes = [
     {
         path: '/changePassword',
         name: 'changePassword',
-        component: () => import('../views/changePassword')
+        component: () => import('../views/ChangePassword')
     },
     {
         path: '/register',
         name: 'register',
-        component: () => import('../views/register')
+        component: () => import('../views/Register')
     }
 ]
 

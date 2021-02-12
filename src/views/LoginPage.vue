@@ -77,7 +77,7 @@ export default {
   top: 0;
   bottom: 0;
 
-  background-image: url("../assets/img/login_bg.jpg");
+  background-image: url("../assets/img/loginBg.jpg");
   background-size: cover;
 }
 

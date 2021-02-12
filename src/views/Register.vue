@@ -105,7 +105,7 @@ export default {
   bottom: 0;
   left: 0;
 
-  background-image: url("../assets/img/register-bg.jpg");
+  background-image: url("../assets/img/registerBg.jpg");
   background-size: cover;
 }
 

@@ -49,7 +49,7 @@
         <div class="home-right-bottom">
           <div v-for="item in rooms" class="home-right-content">
             <div class="home-right-content-room-name">
-              <span>{{ item.name }}</span>
+              <span>{{ item.roomName }}</span>
             </div>
             <div class="home-right-content-enter-btn">
               <el-button @click="enterRoom(item)" size="mini">进入房间</el-button>
@@ -64,8 +64,6 @@
 </template>
 
 <script>
-
-import {getAllRoom, addRoom} from "@/request/room";
 
 export default {
   name: 'Home',
@@ -82,12 +80,6 @@ export default {
     }
   },
   created() {
-
-    //获取房间列表
-    getAllRoom().then(res => {
-      this.rooms = res.data
-    })
-
     if (!localStorage.getItem('userName') || !localStorage.getItem('account')) {
       this.$router.replace('/404')
     }
@@ -101,49 +93,57 @@ export default {
   methods: {
     createRoom() {
       if (this.isDoctor + '' === '1') {
-        this.$prompt('请输入该房间密码', '提示', {
+        for (let item of this.rooms) {
+          if (item.roomName + '' === this.roomName.trim() + '') {
+            this.$message({
+              type: 'warning',
+              message: '房间名已存在'
+            });
+            return;
+          }
+        }
+        this.$prompt('若需要，请输入该房间密码；否则请点击“无需密码”按钮', '提示', {
+          distinguishCancelAndClose: true,
           confirmButtonText: '确定创建',
           cancelButtonText: '无需密码',
+          inputPlaceholder: '请输入...'
         }).then(({value}) => {
-
-          addRoom(this.roomName, value).then(res => {
-            if (res.data) {
-              this.$message({
-                type: 'success',
-                message: '创建成功'
-              });
-            } else {
-              this.$message({
-                type: 'warning',
-                message: '房间名已存在'
-              });
-            }
+          this.$socket.emit('createRoom', {
+            roomName: this.roomName.trim(),
+            password: value
           })
-
-
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '取消输入'
-          });
+        }).catch((action) => {
+          if (action === 'cancel') {
+            this.$socket.emit('createRoom', {
+              roomName: this.roomName.trim(),
+              password: null
+            })
+          }
         });
-
-        // this.$socket.emit('createRoom', {
-        //   roomName: this.roomName
-        // })
       } else {
         this.$message({
           type: 'warning',
           message: '不具备创建房间权限'
         });
       }
-
     },
     enterRoom(item) {
-      this.$socket.emit('enterRoom', {
-        roomId: item.roomId
-      })
-      this.$router.push(`/camera/${item.roomId}`);
+      if (item.password !== null) {
+        this.$prompt('请输入房间密码', '提示', {
+          confirmButtonText: '确定',
+          inputPlaceholder: '请输入...'
+        }).then(({value}) => {
+          this.$socket.emit('enterRoom', {
+            roomId: item.roomId,
+            password: value
+          })
+        })
+      } else {
+        this.$socket.emit('enterRoom', {
+          roomId: item.roomId,
+          password: null
+        })
+      }
     },
     logout() {
       localStorage.clear()
@@ -160,9 +160,16 @@ export default {
     updateRoomList(res) {
       this.rooms = res
     },
-    enterRoomSuccess(res) {
+    createRoomSuccess(res) {
       this.$message({
         message: '成功创建房间',
+        type: 'success'
+      });
+      this.$router.push(`/camera/${res.roomId}`);
+    },
+    enterRoomSuccess(res) {
+      this.$message({
+        message: '成功进入房间',
         type: 'success'
       });
       this.$router.push(`/camera/${res.roomId}`);
@@ -178,6 +185,12 @@ export default {
     },
     sendUserList(res) {
       this.userList = res;
+    },
+    enterRoomFailure() {
+      this.$message({
+        message: '房间密码错误',
+        type: 'warning'
+      });
     }
   }
 }

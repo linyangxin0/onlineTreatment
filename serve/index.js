@@ -5,7 +5,6 @@ let http = require('http').Server(app);
 
 //引入controller
 require('./controllsers/UserController')(app);
-require('./controllsers/RoomController')(app);
 
 
 //配置https
@@ -86,13 +85,14 @@ io.on('connect', (socket) => {
             roomId: num++,
             roomName: data.roomName,
             peopleNum: 1,
-            peoples: [socket.id]
+            peoples: [socket.id],
+            password: data.password
         }
         roomsInfo.push(room)
         socket.join(room.roomId + '')
         //通知创建房间发起者
         if (io.sockets.connected[socket.id]) {
-            io.sockets.connected[socket.id].emit('enterRoomSuccess', room)
+            io.sockets.connected[socket.id].emit('createRoomSuccess', room)
         }
         //广播通知所有人
         io.sockets.emit('updateRoomList', roomsInfo)
@@ -103,11 +103,15 @@ io.on('connect', (socket) => {
     socket.on('enterRoom', (data) => {
         roomsInfo.forEach(function (item) {
             if (item.roomId + '' === data.roomId + '') {
-                item.peopleNum += 1;
-                item.peoples.push(socket.id)
-                socket.join(item.roomId + '');
-                // socket.broadcast.to(item.roomId).emit('enterRoomSuccess', roomsInfo)
-                io.sockets.emit('enterRoomSuccess', item)
+                if (!item.password || item.password + '' === data.password + '') {
+                    item.peopleNum += 1;
+                    item.peoples.push(socket.id)
+                    socket.join(item.roomId + '');
+                    // socket.broadcast.to(item.roomId).emit('enterRoomSuccess', roomsInfo)
+                    io.sockets.emit('enterRoomSuccess', item)
+                } else {
+                    io.sockets.emit('enterRoomFailure')
+                }
             }
         })
     })

@@ -16,8 +16,12 @@
     </div>
     <div class="camera-right">
       <div class="camera-right-top">
-        <div>
+        <div class="camera-right-top-top">
           <span class="camera-right-top-title">当前房间成员</span>
+          <el-button type="danger" size="mini" icon="el-icon-back"
+                     @click="exitRoomClick"
+                     class="camera-right-top-top-btn">离开房间
+          </el-button>
         </div>
         <div v-for="item in users" class="user-line">
           <span class="user-id">{{ item.userName }}</span>
@@ -26,6 +30,7 @@
                        @click="StartCall(item.socketId,true)"
                        v-if="item.socketId !== socketId">通话
             </el-button>
+            <span v-if="item.socketId === socketId" class="connect-btn-text">当前账号</span>
           </div>
         </div>
       </div>
@@ -110,7 +115,6 @@ export default {
     this.pc.push(this.$socket.id);
   },
   beforeDestroy() {
-    this.$socket.emit('exitRoom', this.roomId)
     window.removeEventListener('beforeunload', e => this.refresh(e))
   },
   sockets: {
@@ -293,6 +297,10 @@ export default {
         });
         this.inputContent = ''
       }
+    },
+    exitRoomClick() {
+      this.$socket.emit('exitRoom', this.roomId)
+      this.$router.replace('/home');
     }
   },
 }
@@ -364,14 +372,25 @@ export default {
   box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
 }
 
+.camera-right-top-top {
+  position: relative;
+}
+
 .camera-right-top-title {
   display: inline-block;
   font: 18px large;
   margin-bottom: 10px;
 }
 
+.camera-right-top-top-btn {
+  position: absolute;
+  right: 20px;
+}
+
+
 .user-line {
   display: flex;
+  padding: 0 20px;
 
   height: 35px;
   border-bottom: 1px solid #DCDCDC;
@@ -379,12 +398,19 @@ export default {
 
 .user-id {
   flex: 5;
-  font: 14px Base;
+  font: 16px Base;
   line-height: 35px;
 }
 
 .connect-btn {
+  line-height: 35px;
+
   flex: 2;
+}
+
+.connect-btn-text {
+  color: #606266;
+  font: 16px Base;
 }
 
 .camera-right-bottom {

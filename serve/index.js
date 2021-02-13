@@ -71,8 +71,8 @@ io.on('connect', (socket) => {
                 }
                 if (!isContainPeople) {
                     item.peoples.push({
-                        userName:data.userName,
-                        socketId:socket.id
+                        userName: data.userName,
+                        socketId: socket.id
                     })
                     item.peopleNum++;
                     socket.join(item.roomId)
@@ -161,19 +161,17 @@ io.on('connect', (socket) => {
     //离开房间
     socket.on('exitRoom', (data) => {
         socket.leave(data, () => {
-            // console.log('------------')
-            // console.log(roomsInfo)
             roomsInfo.forEach((item) => {
                 if (item.roomId + '' === data + '') {
                     item.peoples = item.peoples.filter(i => i.socketId + '' !== socket.id + '');
                     item.peopleNum--;
                     if (item.peoples.length === 0) {
                         roomsInfo = roomsInfo.filter(j => j !== item)
+                    } else {
+                        io.to(data).emit('sendRoomInfo', item)
                     }
                     io.sockets.emit('updateRoomList', roomsInfo)
                 }
-                // console.log('++++++++++++++++++')
-                // console.log(roomsInfo)
             })
         })
     })

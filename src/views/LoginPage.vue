@@ -55,7 +55,7 @@ export default {
             this.$router.push('/')
             localStorage.setItem('userName', res.data.name)
             localStorage.setItem('account', res.data.account)
-
+            localStorage.setItem('isDoctor', res.data.doctor)
           } else {
             this.$message.error('用户名或密码错误');
           }

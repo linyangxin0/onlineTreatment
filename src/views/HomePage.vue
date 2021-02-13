@@ -77,7 +77,8 @@ export default {
       onlineNum: 0,
       userName: '',
       account: '',
-      userList: []
+      userList: [],
+      isDoctor: null
     }
   },
   created() {
@@ -91,6 +92,7 @@ export default {
     }
     this.userName = localStorage.getItem('userName')
     this.account = localStorage.getItem('account')
+    this.isDoctor = localStorage.getItem('isDoctor')
     this.$socket.emit('getSysInfo')
     this.$socket.emit('getUserList')
   },

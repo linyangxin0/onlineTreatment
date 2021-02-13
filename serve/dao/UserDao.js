@@ -9,15 +9,7 @@ let connection = mysql.createConnection({
 
 connection.connect();
 
-module.exports.userLogin = function (account, callback) {
-    return connection.query('select * from user where account=?',
-        [account], function (error, results, fields) {
-            if (error) throw error;
-            callback(results)
-        });
-}
-
-module.exports.changePassword = function (account, newPassword, callback) {
+module.exports.updateUserInPassword = function (account, newPassword, callback) {
     return connection.query('update user set password=? where account=?',
         [newPassword, account], function (error, results, fields) {
             if (error) throw error;
@@ -25,7 +17,7 @@ module.exports.changePassword = function (account, newPassword, callback) {
         })
 }
 
-module.exports.userRegister = function (userName, account, password, callback) {
+module.exports.insertUser = function (userName, account, password, callback) {
     return connection.query('insert into user (name,account,password) values(?,?,?)',
         [userName, account, password], function (error, results, fields) {
             if (error) throw error;

@@ -4,7 +4,7 @@ let userModel = require('../models/User')
 module.exports = function (app) {
     //登录
     app.get('/login', async (req, res) => {
-        await loginDao.userLogin(req.query.account, (back) => {
+        await loginDao.selectUserByAccount(req.query.account, (back) => {
             if (back.length === 0) {
                 res.send(false)
             } else {
@@ -21,7 +21,7 @@ module.exports = function (app) {
     app.get('/updatePassword', (req, res) => {
         loginDao.selectUserByAccountAndPassword(req.query.account, req.query.oldPassword, (firstBack) => {
             if (firstBack.length !== 0) {
-                loginDao.changePassword(req.query.account, req.query.newPassword, (secondBack) => {
+                loginDao.updateUserInPassword(req.query.account, req.query.newPassword, (secondBack) => {
                     if (secondBack.changedRows === 0) {
                         res.send({
                             first: true,
@@ -48,7 +48,7 @@ module.exports = function (app) {
             if (firstBack.length !== 0) {
                 res.send(false)
             } else {
-                loginDao.userRegister(req.query.userName, req.query.account, req.query.password, (secondBack) => {
+                loginDao.insertUser(req.query.userName, req.query.account, req.query.password, (secondBack) => {
                     if (secondBack.affectedRows !== 0) {
                         res.send(true)
                     }

@@ -44,7 +44,7 @@ module.exports = function (app) {
 
     //用户注册
     app.get('/userRegister', (req, res) => {
-        let user = new userModel.User(req.query.userName, req.query.account, req.query.password,req.query.doctor)
+        let user = new userModel.User(req.query.userName, req.query.account, req.query.password, req.query.doctor)
         loginDao.selectUserByAccount(req.query.account, (firstBack) => {
             if (firstBack.length !== 0) {
                 res.send(false)

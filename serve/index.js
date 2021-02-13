@@ -5,6 +5,7 @@ let http = require('http').Server(app);
 
 //引入controller
 require('./controllsers/UserController')(app);
+require('./controllsers/RoomController')(app);
 
 
 //配置https

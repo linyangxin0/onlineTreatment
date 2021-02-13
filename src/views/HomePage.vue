@@ -64,6 +64,9 @@
 </template>
 
 <script>
+
+import {getAllRoom} from "@/request/room";
+
 export default {
   name: 'Home',
   components: {},
@@ -78,6 +81,11 @@ export default {
     }
   },
   created() {
+
+    getAllRoom().then(res => {
+      console.log(res)
+    })
+
     if (!localStorage.getItem('userName') || !localStorage.getItem('account')) {
       this.$router.replace('/404')
     }

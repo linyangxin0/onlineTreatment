@@ -22,13 +22,14 @@ export function updatePassword(account, oldPassword, newPassword) {
     })
 }
 
-export function userRegister(userName, account, password) {
+export function userRegister(userName, account, password, doctor) {
     return request({
         url: '/userRegister',
         params: {
             userName,
             account,
-            password
+            password,
+            doctor
         }
     })
 }

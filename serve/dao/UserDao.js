@@ -19,9 +19,9 @@ module.exports.updateUserInPassword = function (account, newPassword, callback) 
 }
 
 //注册
-module.exports.insertUser = function (userName, account, password, callback) {
-    return connection.query('insert into user (name,account,password) values(?,?,?)',
-        [userName, account, password], function (error, results, fields) {
+module.exports.insertUser = function (user, callback) {
+    return connection.query('insert into user (name,account,password,doctor) values( ? ,? ,? ,? )',
+        [user.name, user.account, user.password, user.doctor], function (error, results, fields) {
             if (error) throw error;
             callback(results)
         })

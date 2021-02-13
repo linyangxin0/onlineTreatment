@@ -11,6 +11,17 @@
         <el-input v-model="userName" clearable prefix-icon="el-icon-user" class="input-content"></el-input>
       </div>
       <div class="content-item">
+        <span class="input-title">身份：</span>
+        <el-select v-model="doctor" placeholder="请选择" class="input-content">
+          <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+          </el-option>
+        </el-select>
+      </div>
+      <div class="content-item">
         <span class="input-title">账号：</span>
         <el-input v-model="account" clearable prefix-icon="el-icon-s-custom" class="input-content"></el-input>
       </div>
@@ -43,14 +54,22 @@ export default {
       account: '',
       userName: '',
       firstPassword: '',
-      secondPassword: ''
+      secondPassword: '',
+      options: [{
+        value: 0,
+        label: '普通用户'
+      }, {
+        value: 1,
+        label: '医生'
+      }],
+      doctor: 0
     }
   },
   methods: {
     registerClick() {
       if (this.userName && this.account && this.firstPassword && this.secondPassword) {
         if (this.firstPassword === this.secondPassword) {
-          userRegister(this.userName, this.account, this.secondPassword).then(res => {
+          userRegister(this.userName, this.account, this.secondPassword, this.doctor).then(res => {
             if (res.data) {
               this.$message({
                 message: '注册成功',
@@ -121,9 +140,9 @@ export default {
 
 .content {
   width: 600px;
-  height: 300px;
+  height: 360px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .5);
-  border-radius: 20px;
+  border-radius: 10px;
   padding: 20px;
 
   position: absolute;

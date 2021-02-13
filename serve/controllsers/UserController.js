@@ -1,7 +1,7 @@
 let loginDao = require('../dao/UserDao')
+let userModel = require('../models/User')
 
 module.exports = function (app) {
-
     //登录
     app.get('/login', async (req, res) => {
         await loginDao.userLogin(req.query.account, (back) => {

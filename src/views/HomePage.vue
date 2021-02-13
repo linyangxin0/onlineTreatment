@@ -49,7 +49,7 @@
         <div class="home-right-bottom">
           <div v-for="item in rooms" class="home-right-content">
             <div class="home-right-content-room-name">
-              <span>{{ item.roomName }}</span>
+              <span>{{ item.name }}</span>
             </div>
             <div class="home-right-content-enter-btn">
               <el-button @click="enterRoom(item)" size="mini">进入房间</el-button>
@@ -65,7 +65,7 @@
 
 <script>
 
-import {getAllRoom} from "@/request/room";
+import {getAllRoom, addRoom} from "@/request/room";
 
 export default {
   name: 'Home',
@@ -83,8 +83,9 @@ export default {
   },
   created() {
 
+    //获取房间列表
     getAllRoom().then(res => {
-      console.log(res)
+      this.rooms = res.data
     })
 
     if (!localStorage.getItem('userName') || !localStorage.getItem('account')) {
@@ -93,14 +94,50 @@ export default {
     this.userName = localStorage.getItem('userName')
     this.account = localStorage.getItem('account')
     this.isDoctor = localStorage.getItem('isDoctor')
+
     this.$socket.emit('getSysInfo')
     this.$socket.emit('getUserList')
   },
   methods: {
     createRoom() {
-      this.$socket.emit('createRoom', {
-        roomName: this.roomName
-      })
+      if (this.isDoctor + '' === '1') {
+        this.$prompt('请输入该房间密码', '提示', {
+          confirmButtonText: '确定创建',
+          cancelButtonText: '无需密码',
+        }).then(({value}) => {
+
+          addRoom(this.roomName, value).then(res => {
+            if (res.data) {
+              this.$message({
+                type: 'success',
+                message: '创建成功'
+              });
+            } else {
+              this.$message({
+                type: 'warning',
+                message: '房间名已存在'
+              });
+            }
+          })
+
+
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消输入'
+          });
+        });
+
+        // this.$socket.emit('createRoom', {
+        //   roomName: this.roomName
+        // })
+      } else {
+        this.$message({
+          type: 'warning',
+          message: '不具备创建房间权限'
+        });
+      }
+
     },
     enterRoom(item) {
       this.$socket.emit('enterRoom', {

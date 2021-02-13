@@ -5,3 +5,14 @@ export function getAllRoom() {
         url: '/getRooms'
     });
 }
+
+
+export function addRoom(name, password) {
+    return request({
+        url: '/addRoom',
+        params: {
+            name,
+            password
+        }
+    });
+}

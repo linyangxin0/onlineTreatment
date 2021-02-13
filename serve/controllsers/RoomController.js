@@ -1,5 +1,5 @@
 let roomDao = require('../dao/RoomDao')
-let userModel = require('../models/Room')
+let roomModel = require('../models/Room')
 
 module.exports = function (app) {
 
@@ -8,4 +8,18 @@ module.exports = function (app) {
             res.send(back)
         })
     })
+
+    app.get('/addRoom', (req, res) => {
+        roomDao.selectRoomByName(req.query.name, (back) => {
+            if (back.length !== 0) {
+                res.send(false)
+            } else {
+                let room = new roomModel.Room(req.query.name, req.query.password)
+                roomDao.insertRoom(room, (back) => {
+                    res.send(true)
+                })
+            }
+        })
+    })
+
 }

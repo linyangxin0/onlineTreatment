@@ -16,3 +16,24 @@ module.exports.selectAllRoom = function (callback) {
         callback(results)
     })
 }
+
+
+//根据房间名称查询
+module.exports.selectRoomByName = function (name, callback) {
+    return connection.query('select * from room where name = ?',
+        [name], function (error, results, fields) {
+            if (error) throw error;
+            callback(results)
+        })
+}
+
+//插入room
+module.exports.insertRoom = function (room, callback) {
+    return connection.query('insert into room (name,password) values (?,?)',
+        [room.name, room.password], function (error, results, fields) {
+            if (error) throw error;
+            callback(results)
+        })
+}
+
+

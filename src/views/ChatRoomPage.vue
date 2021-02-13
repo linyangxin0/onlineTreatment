@@ -20,11 +20,11 @@
           <span class="camera-right-top-title">当前房间成员</span>
         </div>
         <div v-for="item in users" class="user-line">
-          <span class="user-id">{{ item }}</span>
+          <span class="user-id">{{ item.userName }}</span>
           <div class="connect-btn">
             <el-button type="success" icon="el-icon-phone" size="mini"
-                       @click="StartCall(item,true)"
-                       v-if="item !== socketId">通话
+                       @click="StartCall(item.socketId,true)"
+                       v-if="item.socketId !== socketId">通话
             </el-button>
           </div>
         </div>
@@ -82,7 +82,8 @@ export default {
       playerChange: true,
       inputContent: '',
       roomId: '',
-      chatMessage: []
+      chatMessage: [],
+      userName: ''
     }
   },
   created() {
@@ -97,9 +98,11 @@ export default {
     this.$socket.emit('init');
     this.socketId = this.$socket.id;
     this.roomId = this.$route.params.roomId;
+    this.userName = localStorage.getItem('userName');
 
     this.$socket.emit('getRoomUsers', {
-      roomId: this.roomId
+      roomId: this.roomId,
+      userName: this.userName
     })
   },
   mounted() {
@@ -158,7 +161,7 @@ export default {
     getNewMessage(res) {
       this.chatMessage.push(res)
     },
-    roomUnableEnter(){
+    roomUnableEnter() {
       this.$message({
         message: '抱歉，房间不存在或不可进入！',
         type: 'warning'

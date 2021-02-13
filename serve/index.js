@@ -63,8 +63,17 @@ io.on('connect', (socket) => {
         roomsInfo.forEach((item) => {
             if (item.roomId + '' === data.roomId + '') {
                 isContainRoom = !isContainRoom;
-                if (item.peoples.indexOf(socket.id) === -1) {
-                    item.peoples.push(socket.id)
+                let isContainPeople = false;
+                for (let i of item.peoples) {
+                    if (i.socketId === socket.id) {
+                        isContainPeople = true;
+                    }
+                }
+                if (!isContainPeople) {
+                    item.peoples.push({
+                        userName:data.userName,
+                        socketId:socket.id
+                    })
                     item.peopleNum++;
                     socket.join(item.roomId)
                 }
@@ -90,8 +99,11 @@ io.on('connect', (socket) => {
             roomId: num++,
             roomName: data.roomName,
             peopleNum: 1,
-            peoples: [socket.id],
-            password: data.password
+            peoples: [{
+                socketId: socket.id,
+                userName: data.userName
+            }],
+            password: data.password,
         }
         roomsInfo.push(room)
         socket.join(room.roomId + '')
@@ -110,7 +122,10 @@ io.on('connect', (socket) => {
             if (item.roomId + '' === data.roomId + '') {
                 if (!item.password || item.password + '' === data.password + '') {
                     item.peopleNum += 1;
-                    item.peoples.push(socket.id)
+                    item.peoples.push({
+                        socketId: socket.id,
+                        userName: data.userName
+                    })
                     socket.join(item.roomId + '');
                     // socket.broadcast.to(item.roomId).emit('enterRoomSuccess', roomsInfo)
                     io.sockets.emit('enterRoomSuccess', item)
@@ -146,15 +161,19 @@ io.on('connect', (socket) => {
     //离开房间
     socket.on('exitRoom', (data) => {
         socket.leave(data, () => {
+            // console.log('------------')
+            // console.log(roomsInfo)
             roomsInfo.forEach((item) => {
                 if (item.roomId + '' === data + '') {
-                    item.peoples = item.peoples.filter(i => i + '' !== socket.id + '');
+                    item.peoples = item.peoples.filter(i => i.socketId + '' !== socket.id + '');
                     item.peopleNum--;
                     if (item.peoples.length === 0) {
                         roomsInfo = roomsInfo.filter(j => j !== item)
                     }
                     io.sockets.emit('updateRoomList', roomsInfo)
                 }
+                // console.log('++++++++++++++++++')
+                // console.log(roomsInfo)
             })
         })
     })

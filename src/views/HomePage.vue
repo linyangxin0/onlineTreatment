@@ -110,13 +110,15 @@ export default {
         }).then(({value}) => {
           this.$socket.emit('createRoom', {
             roomName: this.roomName.trim(),
-            password: value
+            password: value,
+            userName:this.userName
           })
         }).catch((action) => {
           if (action === 'cancel') {
             this.$socket.emit('createRoom', {
               roomName: this.roomName.trim(),
-              password: null
+              password: null,
+              userName:this.userName
             })
           }
         });
@@ -135,13 +137,15 @@ export default {
         }).then(({value}) => {
           this.$socket.emit('enterRoom', {
             roomId: item.roomId,
-            password: value
+            password: value,
+            userName:this.userName
           })
         })
       } else {
         this.$socket.emit('enterRoom', {
           roomId: item.roomId,
-          password: null
+          password: null,
+          userName:this.userName
         })
       }
     },

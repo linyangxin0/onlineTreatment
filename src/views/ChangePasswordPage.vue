@@ -1,5 +1,10 @@
 <template>
   <div id="changePassword">
+    <div class="changePassword-come-back">
+      <el-button type="info" icon="el-icon-arrow-left"
+                 size="small" @click="backBtnClick">返回
+      </el-button>
+    </div>
     <div class="changePassword-title">
       <span class="changePassword-title-content">
         修改密码
@@ -106,6 +111,9 @@ export default {
         this.firstPassword = '';
         this.secondPassword = '';
       });
+    },
+    backBtnClick() {
+      this.$router.go(-1)
     }
   }
 }
@@ -121,6 +129,12 @@ export default {
 
   background-image: url("../assets/img/changPasswordBg.jpg");
   background-size: cover;
+}
+
+.changePassword-come-back {
+  position: absolute;
+  top: 30px;
+  left: 30px;
 }
 
 .changePassword-title {

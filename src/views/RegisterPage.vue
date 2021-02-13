@@ -1,5 +1,10 @@
 <template>
   <div id="register">
+    <div class="register-come-back">
+      <el-button type="info" icon="el-icon-arrow-left"
+                 size="small" @click="backBtnClick">返回
+      </el-button>
+    </div>
     <div class="register-title">
       <span class="register-title-content">
         账号注册
@@ -55,13 +60,15 @@ export default {
       userName: '',
       firstPassword: '',
       secondPassword: '',
-      options: [{
-        value: 0,
-        label: '普通用户'
-      }, {
-        value: 1,
-        label: '医生'
-      }],
+      options: [
+        {
+          value: 0,
+          label: '普通用户'
+        }, {
+          value: 1,
+          label: '医生'
+        }
+      ],
       doctor: 0
     }
   },
@@ -111,6 +118,9 @@ export default {
         this.firstPassword = '';
         this.secondPassword = '';
       });
+    },
+    backBtnClick() {
+      this.$router.go(-1)
     }
   }
 }
@@ -126,6 +136,12 @@ export default {
 
   background-image: url("../assets/img/registerBg.jpg");
   background-size: cover;
+}
+
+.register-come-back {
+  position: absolute;
+  left: 30px;
+  top: 30px;
 }
 
 .register-title {

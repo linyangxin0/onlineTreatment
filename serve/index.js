@@ -24,6 +24,8 @@ let onlinePersonNum = 0;
 let roomsInfo = []
 //房间id
 let num = 0
+//当前连接人数
+let userList = [];
 
 //socket.io连接
 io.on('connect', (socket) => {
@@ -44,13 +46,14 @@ io.on('connect', (socket) => {
 
 
     //返回所有已连接用户
-    socket.on('getUserList', () => {
+    socket.on('getUserList', (data) => {
         if (io.sockets.connected[socket.id]) {
-            let userList = [];
-            for (let key in io.sockets.connected) {
-                userList.push(key)
-            }
-            io.sockets.connected[socket.id].emit('sendUserList', userList)
+            userList = userList.filter(item => item.userName !== data)
+            userList.push({
+                socketId: socket.id,
+                userName: data
+            })
+            io.sockets.emit('sendUserList', userList)
         }
     })
 
@@ -75,7 +78,9 @@ io.on('connect', (socket) => {
 
     //用户退出系统
     socket.on('disconnect', () => {
+        userList = userList.filter(item => item.socketId !== socket.id)
         onlinePersonNum--;
+        socket.broadcast.emit('sendUserList', userList)
         socket.broadcast.emit('updateOnlineNum', onlinePersonNum)
     })
 

@@ -35,7 +35,7 @@
         </div>
         <div class="home-center-content">
           <div v-for="item in userList" class="home-center-content-list">
-            {{ item }}
+            {{ item.userName }}
           </div>
         </div>
       </div>
@@ -88,7 +88,7 @@ export default {
     this.isDoctor = localStorage.getItem('isDoctor')
 
     this.$socket.emit('getSysInfo')
-    this.$socket.emit('getUserList')
+    this.$socket.emit('getUserList', this.userName)
   },
   methods: {
     createRoom() {
@@ -294,6 +294,7 @@ export default {
   text-align: center;
   font: 20px Extra large;
   font-weight: 700;
+
 }
 
 .home-center-content {
@@ -311,6 +312,7 @@ export default {
   margin: 10px;
   padding: 0 30px;
   border-bottom: 1px solid #DCDCDC;
+  text-align: center;
 }
 
 .home-right {

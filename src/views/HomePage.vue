@@ -250,7 +250,15 @@ export default {
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   background-color: #fff;
   border-radius: 10px;
+
+  display: flex;
+  flex-direction: column;
 }
+
+.home-left-top > div {
+  flex: 1;
+}
+
 
 .home-left-top-title {
   font: 20px Extra large;

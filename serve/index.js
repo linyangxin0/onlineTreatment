@@ -152,7 +152,8 @@ io.on('connect', (socket) => {
             roomId: msg.roomId,
             content: msg.content,
             sender: socket.id,
-            time: msg.time
+            time: msg.time,
+            userName: msg.userName
         }
         io.to(msg.roomId).emit('getNewMessage', res);
     })

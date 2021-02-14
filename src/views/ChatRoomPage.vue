@@ -18,7 +18,7 @@
       <div class="camera-right-top">
         <div class="camera-right-top-top">
           <span class="camera-right-top-title">当前房间成员</span>
-          <el-button type="danger" size="mini" icon="el-icon-back"
+          <el-button type="danger" size="mini"
                      @click="exitRoomClick"
                      class="camera-right-top-top-btn">离开房间
           </el-button>
@@ -40,7 +40,7 @@
           <div class="chat-content-message" v-for="item in chatMessage">
             <div class="chat-content-message-left">
               <div class="chat-content-message-left-top">
-                <span class="chat-content-message-left-sender">{{ item.sender }}</span>
+                <span class="chat-content-message-left-sender">{{ item.userName }}</span>
                 <span class="chat-content-message-left-time">{{ item.time }}</span>
               </div>
               <div class="chat-content-message-left-bottom">
@@ -51,8 +51,10 @@
           </div>
         </div>
         <div class="input-content">
-          <el-input placeholder="请输入..." v-model="inputContent"  @keypress.native.enter="sendMessage">
-            <el-button type="info" slot="append" icon="el-icon-s-promotion" @click="sendMessage">发送</el-button>
+          <el-input placeholder="请输入..." v-model="inputContent" @keypress.native.enter="sendMessage">
+            <el-button slot="append" icon="el-icon-s-promotion"
+                       @click="sendMessage" type="primary" plain>发送
+            </el-button>
           </el-input>
         </div>
       </div>
@@ -293,7 +295,8 @@ export default {
         this.$socket.emit('sendMessage', {
           content: this.inputContent,
           roomId: this.roomId,
-          time: time
+          time: time,
+          userName: this.userName
         });
         this.inputContent = ''
       }

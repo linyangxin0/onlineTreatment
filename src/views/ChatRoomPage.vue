@@ -51,7 +51,7 @@
           </div>
         </div>
         <div class="input-content">
-          <el-input placeholder="请输入..." v-model="inputContent">
+          <el-input placeholder="请输入..." v-model="inputContent"  @keypress.native.enter="sendMessage">
             <el-button type="info" slot="append" icon="el-icon-s-promotion" @click="sendMessage">发送</el-button>
           </el-input>
         </div>

@@ -22,13 +22,13 @@
       </div>
       <div class="content-item">
         <span class="input-title">密码：</span>
-        <el-input show-password v-model="firstPassword" clearable prefix-icon="el-icon-lock"
-                  class="input-content"></el-input>
+        <el-input show-password v-model="firstPassword" clearable
+                  prefix-icon="el-icon-lock" class="input-content"></el-input>
       </div>
       <div class="content-item">
         <span class="input-title">重复密码：</span>
         <el-input show-password v-model="secondPassword" clearable prefix-icon="el-icon-lock"
-                  class="input-content"></el-input>
+                  class="input-content" @keypress.native.enter="changePasswordClick"></el-input>
       </div>
       <div class="content-btn">
         <el-button @click="changePasswordClick" class="btn-item" type="success">修改</el-button>

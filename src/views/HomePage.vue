@@ -22,7 +22,7 @@
           </span>
           </div>
           <div class="home-left-bottom-bottom">
-            <el-input placeholder="请输入房间名" v-model="roomName">
+            <el-input placeholder="请输入房间名" v-model="roomName" @keypress.native.enter="createRoom">
               <el-button slot="append" icon="el-icon-s-home" @click="createRoom">创建房间</el-button>
             </el-input>
           </div>
@@ -93,35 +93,42 @@ export default {
   methods: {
     createRoom() {
       if (this.isDoctor + '' === '1') {
-        for (let item of this.rooms) {
-          if (item.roomName + '' === this.roomName.trim() + '') {
-            this.$message({
-              type: 'warning',
-              message: '房间名已存在'
-            });
-            return;
+        if (this.roomName.trim() !== '') {
+          for (let item of this.rooms) {
+            if (item.roomName + '' === this.roomName.trim() + '') {
+              this.$message({
+                type: 'warning',
+                message: '房间名已存在'
+              });
+              return;
+            }
           }
-        }
-        this.$prompt('若需要，请输入该房间密码；否则请点击“无需密码”按钮', '提示', {
-          distinguishCancelAndClose: true,
-          confirmButtonText: '确定创建',
-          cancelButtonText: '无需密码',
-          inputPlaceholder: '请输入...'
-        }).then(({value}) => {
-          this.$socket.emit('createRoom', {
-            roomName: this.roomName.trim(),
-            password: value,
-            userName:this.userName
-          })
-        }).catch((action) => {
-          if (action === 'cancel') {
+          this.$prompt('若需要，请输入该房间密码；否则请点击“无需密码”按钮', '提示', {
+            distinguishCancelAndClose: true,
+            confirmButtonText: '确定创建',
+            cancelButtonText: '无需密码',
+            inputPlaceholder: '请输入...'
+          }).then(({value}) => {
             this.$socket.emit('createRoom', {
               roomName: this.roomName.trim(),
-              password: null,
-              userName:this.userName
+              password: value,
+              userName: this.userName
             })
-          }
-        });
+          }).catch((action) => {
+            if (action === 'cancel') {
+              this.$socket.emit('createRoom', {
+                roomName: this.roomName.trim(),
+                password: null,
+                userName: this.userName
+              })
+            }
+          });
+        } else {
+          this.$message({
+            type: 'warning',
+            message: '房间名不能为空'
+          });
+        }
       } else {
         this.$message({
           type: 'warning',
@@ -138,14 +145,14 @@ export default {
           this.$socket.emit('enterRoom', {
             roomId: item.roomId,
             password: value,
-            userName:this.userName
+            userName: this.userName
           })
         })
       } else {
         this.$socket.emit('enterRoom', {
           roomId: item.roomId,
           password: null,
-          userName:this.userName
+          userName: this.userName
         })
       }
     },

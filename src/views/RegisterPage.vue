@@ -38,7 +38,7 @@
       <div class="content-item">
         <span class="input-title">重复密码：</span>
         <el-input show-password v-model="secondPassword" clearable prefix-icon="el-icon-lock"
-                  class="input-content"></el-input>
+                  class="input-content" @keypress.native.enter="registerClick"></el-input>
       </div>
       <div class="content-btn">
         <el-button @click="registerClick" class="btn-item" type="success">注册</el-button>

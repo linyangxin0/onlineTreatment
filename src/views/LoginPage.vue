@@ -19,7 +19,8 @@
                   placeholder="password"
                   v-model="password"
                   type="password"
-                  clearable></el-input>
+                  clearable
+                  @keypress.native.enter="login"></el-input>
       </div>
       <div class="login-bottom">
         <el-button class="login-btn" type="success" @click="login">登录</el-button>

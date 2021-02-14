@@ -23,7 +23,9 @@
           </div>
           <div class="home-left-bottom-bottom">
             <el-input placeholder="请输入房间名" v-model="roomName" @keypress.native.enter="createRoom">
-              <el-button slot="append" icon="el-icon-s-home" @click="createRoom">创建房间</el-button>
+              <el-button slot="append" icon="el-icon-s-home"
+                         @click="createRoom" type="primary" plain>创建房间
+              </el-button>
             </el-input>
           </div>
         </div>

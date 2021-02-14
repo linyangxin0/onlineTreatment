@@ -18,7 +18,7 @@
       <div class="camera-right-top">
         <div class="camera-right-top-top">
           <span class="camera-right-top-title">当前房间成员</span>
-          <el-button type="danger" size="mini"
+          <el-button type="info" size="mini"
                      @click="exitRoomClick"
                      class="camera-right-top-top-btn">离开房间
           </el-button>
@@ -45,13 +45,15 @@
               </div>
               <div class="chat-content-message-left-bottom">
                 <span class="chat-content-message-left-content"
-                      :class="{myOwnMessage:item.sender===socketId}">{{ item.content }}</span>
+                      :class="{myOwnMessage:item.sender === socketId}">
+                  {{ item.content }}</span>
               </div>
             </div>
           </div>
         </div>
         <div class="input-content">
-          <el-input placeholder="请输入..." v-model="inputContent" @keypress.native.enter="sendMessage">
+          <el-input placeholder="请输入..." v-model="inputContent"
+                    @keypress.native.enter="sendMessage">
             <el-button slot="append" icon="el-icon-s-promotion"
                        @click="sendMessage" type="primary" plain>发送
             </el-button>
@@ -117,6 +119,7 @@ export default {
     this.pc.push(this.$socket.id);
   },
   beforeDestroy() {
+    this.refresh();
     window.removeEventListener('beforeunload', e => this.refresh(e))
   },
   sockets: {

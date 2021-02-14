@@ -17,9 +17,9 @@
             <span>当前在线人数：</span>
           </div>
           <div class="home-left-bottom-center">
-          <span>
-            {{ onlineNum }}
-          </span>
+            <span>
+              {{ onlineNum }}
+            </span>
           </div>
           <div class="home-left-bottom-bottom">
             <el-input placeholder="请输入房间名" v-model="roomName" @keypress.native.enter="createRoom">
@@ -58,7 +58,6 @@
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </div>
@@ -111,11 +110,18 @@ export default {
             cancelButtonText: '无需密码',
             inputPlaceholder: '请输入...'
           }).then(({value}) => {
-            this.$socket.emit('createRoom', {
-              roomName: this.roomName.trim(),
-              password: value,
-              userName: this.userName
-            })
+            if (value + '' !== 'null' && value.trim() !== '') {
+              this.$socket.emit('createRoom', {
+                roomName: this.roomName.trim(),
+                password: value.trim(),
+                userName: this.userName
+              })
+            } else {
+              this.$message({
+                type: 'warning',
+                message: '若不需要密码请点击“无需密码”按钮'
+              });
+            }
           }).catch((action) => {
             if (action === 'cancel') {
               this.$socket.emit('createRoom', {
@@ -144,11 +150,18 @@ export default {
           confirmButtonText: '确定',
           inputPlaceholder: '请输入...'
         }).then(({value}) => {
-          this.$socket.emit('enterRoom', {
-            roomId: item.roomId,
-            password: value,
-            userName: this.userName
-          })
+          if (value + '' !== 'null' && value.trim() !== '') {
+            this.$socket.emit('enterRoom', {
+              roomId: item.roomId,
+              password: value,
+              userName: this.userName
+            })
+          } else {
+            this.$message({
+              message: '请输入密码',
+              type: 'warning'
+            });
+          }
         })
       } else {
         this.$socket.emit('enterRoom', {
@@ -269,10 +282,6 @@ export default {
   font: 18px large;
 }
 
-.home-left-top-logout-btn {
-  margin-top: 20px;
-}
-
 .home-left-bottom {
   flex: 2;
   margin: 30px;
@@ -334,6 +343,7 @@ export default {
   padding: 0 30px;
   border-bottom: 1px solid #DCDCDC;
   text-align: center;
+  font: 16px Medium;
 }
 
 .home-right {

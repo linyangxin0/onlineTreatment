@@ -1,4 +1,4 @@
-import {request} from './request';
+import { request } from './request';
 
 export function userLogin(account, password) {
     return request({
@@ -32,4 +32,10 @@ export function userRegister(userName, account, password, doctor) {
             doctor
         }
     })
+}
+
+export function getDoctorList() {
+    return request({
+        url: '/selectAllDoctor'
+    });
 }

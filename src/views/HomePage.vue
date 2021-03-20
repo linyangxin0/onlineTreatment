@@ -69,7 +69,7 @@
           >
             <div>
               <span>
-                {{ item.userName }}
+                {{ item.name }}
               </span>
             </div>
             <div>
@@ -114,6 +114,8 @@
 </template>
 
 <script>
+import { getDoctorList } from '../request/user';
+
 export default {
   name: 'Home',
   components: {},
@@ -137,7 +139,10 @@ export default {
     this.isDoctor = localStorage.getItem('isDoctor');
 
     this.$socket.emit('getSysInfo');
-    this.$socket.emit('getUserList', this.userName);
+    // this.$socket.emit('getUserList', this.userName);
+    getDoctorList().then(res => {
+      this.userList = res.data;
+    });
   },
   methods: {
     createRoom() {
@@ -228,9 +233,9 @@ export default {
     changePassword() {
       this.$router.push('/changePassword');
     },
-    enterInfoPage(){
+    enterInfoPage() {
       this.$router.push('/doctorInfo');
-    }
+    },
   },
   sockets: {
     connect() {
@@ -262,9 +267,9 @@ export default {
         type: 'success',
       });
     },
-    sendUserList(res) {
-      this.userList = res;
-    },
+    // sendUserList(res) {
+    //   this.userList = res;
+    // },
     enterRoomFailure() {
       this.$message({
         message: '房间密码错误',

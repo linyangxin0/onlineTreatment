@@ -45,5 +45,14 @@ module.exports.selectUserByAccountAndPassword = function (account, password, cal
         })
 }
 
+//获取所有的医生列表
+module.exports.selectAllDoctor = function (callback) {
+    return connection.query('select * from user where doctor = 1',
+        function (error, results, fields) {
+            if (error) throw error;
+            callback(results)
+        })
+}
+
 
 

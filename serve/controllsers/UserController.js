@@ -58,6 +58,12 @@ module.exports = function (app) {
         })
     })
 
+    //获取医师列表
+    app.get('/selectAllDoctor', async (req, res) => {
+        await loginDao.selectAllDoctor((back) => {
+            res.send(back);
+        })
+    });
 }
 
 

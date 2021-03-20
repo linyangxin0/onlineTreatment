@@ -64,6 +64,13 @@ module.exports = function (app) {
             res.send(back);
         })
     });
+
+    //登录
+    app.get('/getDoctorInfo', async (req, res) => {
+        await loginDao.selectDoctorInfoById(req.query.id, (back) => {
+            res.send(back[0])
+        })
+    });
 }
 
 

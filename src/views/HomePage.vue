@@ -76,7 +76,7 @@
               <el-button
                 size="mini"
                 type="info"
-                @click="enterInfoPage"
+                @click="enterInfoPage(item.id)"
               >
                 详情
               </el-button>
@@ -139,7 +139,6 @@ export default {
     this.isDoctor = localStorage.getItem('isDoctor');
 
     this.$socket.emit('getSysInfo');
-    // this.$socket.emit('getUserList', this.userName);
     getDoctorList().then(res => {
       this.userList = res.data;
     });
@@ -233,8 +232,8 @@ export default {
     changePassword() {
       this.$router.push('/changePassword');
     },
-    enterInfoPage() {
-      this.$router.push('/doctorInfo');
+    enterInfoPage(doctorId) {
+      this.$router.push(`/doctorInfo/${doctorId}`);
     },
   },
   sockets: {
@@ -267,9 +266,6 @@ export default {
         type: 'success',
       });
     },
-    // sendUserList(res) {
-    //   this.userList = res;
-    // },
     enterRoomFailure() {
       this.$message({
         message: '房间密码错误',

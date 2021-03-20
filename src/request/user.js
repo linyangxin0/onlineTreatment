@@ -39,3 +39,13 @@ export function getDoctorList() {
         url: '/selectAllDoctor'
     });
 }
+
+
+export function selectDoctorInfoById(id) {
+    return request({
+        url: '/getDoctorInfo',
+        params: {
+            id
+        }
+    });
+}

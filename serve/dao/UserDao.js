@@ -54,5 +54,13 @@ module.exports.selectAllDoctor = function (callback) {
         })
 }
 
+//根据id查找user
+module.exports.selectDoctorInfoById = function (id, callback) {
+    return connection.query('select * from user where id = ?',
+        [id], function (error, results, fields) {
+            if (error) throw error;
+            callback(results)
+        })
+}
 
 

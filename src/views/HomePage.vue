@@ -67,7 +67,20 @@
             :key="index"
             class="home-center-content-list"
           >
-            {{ item.userName }}
+            <div>
+              <span>
+                {{ item.userName }}
+              </span>
+            </div>
+            <div>
+              <el-button
+                size="mini"
+                type="info"
+                @click="enterInfoPage"
+              >
+                详情
+              </el-button>
+            </div>
           </div>
         </div>
       </div>
@@ -215,6 +228,9 @@ export default {
     changePassword() {
       this.$router.push('/changePassword');
     },
+    enterInfoPage(){
+      this.$router.push('/doctorInfo');
+    }
   },
   sockets: {
     connect() {
@@ -373,6 +389,10 @@ export default {
 }
 
 .home-center-content-list {
+  display: flex;
+  justify-content: space-around;
+
+  height: 35px;
   margin: 10px;
   padding: 0 30px;
   border-bottom: 1px solid #dcdcdc;

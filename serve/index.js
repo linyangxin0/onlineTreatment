@@ -10,8 +10,8 @@ require('./controllsers/UserController')(app);
 //配置https
 let fs = require('fs');
 let sslOptions = {
-    key: fs.readFileSync('C:/privkey.key'),//里面的文件替换成你生成的私钥
-    cert: fs.readFileSync('C:/cacert.pem')//里面的文件替换成你生成的证书
+    key: fs.readFileSync('/Users/bytedance/Desktop/ssl/privkey.key'),//里面的文件替换成你生成的私钥
+    cert: fs.readFileSync('/Users/bytedance/Desktop/ssl/cacert.pem')//里面的文件替换成你生成的证书
 };
 
 const https = require('https').createServer(sslOptions, app);

@@ -63,4 +63,22 @@ module.exports.selectDoctorInfoById = function (id, callback) {
         })
 }
 
+//增加医生预约信息
+module.exports.addAppointment = function (id, time, callback) {
+    return connection.query('insert into appointment (doctor_id, time) values( ? ,? )',
+        [id, time], function (error, results, fields) {
+            if (error) throw error;
+            callback(results)
+        })
+}
+
+//根据doctor_id查找时间
+module.exports.selectAllTimeById = function (id, callback) {
+    return connection.query('select * from appointment where doctor_id = ? order by time',
+        [id], function (error, results, fields) {
+            if (error) throw error;
+            callback(results)
+        })
+}
+
 

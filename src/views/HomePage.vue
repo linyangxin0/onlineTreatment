@@ -118,7 +118,6 @@ import { getDoctorList } from '../request/user';
 
 export default {
   name: 'Home',
-  components: {},
   data() {
     return {
       roomName: '',

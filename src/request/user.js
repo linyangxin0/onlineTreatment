@@ -49,3 +49,21 @@ export function selectDoctorInfoById(id) {
         }
     });
 }
+
+export function addAppointment(id, time) {
+    return request({
+        url: '/addAppointment',
+        params: {
+            id, time
+        }
+    });
+}
+
+export function getAppointmentById(id) {
+    return request({
+        url: '/getAppointmentById',
+        params: {
+            id
+        }
+    });
+}

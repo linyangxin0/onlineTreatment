@@ -19,8 +19,11 @@
         <div class="dcotor-info-content-top-right-partment">
           <span>所属部门：{{ info.partment }}</span>
         </div>
-        <p class="dcotor-info-content-top-right-info">
-          {{ info.info }}
+        <p
+          class="dcotor-info-content-top-right-info"
+          v-html="displayInfo"
+        >
+          {{ displayInfo }}
         </p>
       </div>
     </div>
@@ -138,6 +141,9 @@ export default {
         displayTimesArr.push(dateFormat('YY-mm-dd HH:MM', new Date(item)));
       });
       return displayTimesArr;
+    },
+    displayInfo() {
+      return this.info.info && `&nbsp;&nbsp;&nbsp;&nbsp;${ this.info.info.replace(/\n/g, '\n&nbsp;&nbsp;&nbsp;&nbsp;')}`;
     },
   },
   watch: {

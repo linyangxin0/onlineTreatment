@@ -1,26 +1,26 @@
 <template>
-  <div class="dcotor-info-page">
+  <div class="page">
     <!-- 简单资料 -->
-    <div class="dcotor-info-content-top">
-      <div class="dcotor-info-content-top-left">
+    <div class="content-top">
+      <div class="content-top-left">
         <el-image
           class="user-avatar"
           :src="info.avatar_url"
           fit="cover"
         />
       </div>
-      <div class="dcotor-info-content-top-right">
-        <div class="dcotor-info-content-top-right-name">
+      <div class="content-top-right">
+        <div class="content-top-right-name">
           <span>医生姓名：{{ info.name }}</span>
         </div>
-        <div class="dcotor-info-content-top-right-tel">
+        <div class="content-top-right-tel">
           <span>联系方式：{{ info.tel }}</span>
         </div>
-        <div class="dcotor-info-content-top-right-partment">
+        <div class="content-top-right-partment">
           <span>所属部门：{{ info.partment }}</span>
         </div>
         <p
-          class="dcotor-info-content-top-right-info"
+          class="content-top-right-info"
           v-html="displayInfo"
         >
           {{ displayInfo }}
@@ -28,10 +28,10 @@
       </div>
     </div>
     <!-- 预约时间 -->
-    <div class="doctor-info-page-content-bottom">
-      <div class="doctor-info-page-content-bottom-left">
-        <div>
-          <span class="doctor-info-page-content-bottom-text">预约时间：</span>
+    <div class="page-content-bottom">
+      <div class="page-content-bottom-left">
+        <div class="page-content-bottom-text">
+          <span>预约时间：</span>
         </div>
         <div>
           <el-date-picker
@@ -39,7 +39,7 @@
             type="date"
             placeholder="选择日期"
             :picker-options="pickerOptions"
-            class="doctor-info-page-content-bottom-date"
+            class="page-content-bottom-date"
           />
         </div>
         <div>
@@ -52,7 +52,7 @@
               end: '18:30',
             }"
             placeholder="选择时间"
-            class="doctor-info-page-content-bottom-time"
+            class="page-content-bottom-time"
             @change="choseTime"
           />
         </div>
@@ -60,7 +60,7 @@
           <el-button
             size="middle"
             type="message"
-            class="doctor-info-page-content-bottom-button"
+            class="page-content-bottom-button"
             @click="makeAppointment"
           >
             预约
@@ -68,15 +68,15 @@
         </div>
       </div>
       <!-- 当前已预约时段 -->
-      <div class="doctor-info-page-content-bottom-right">
-        <div class="doctor-info-page-content-bottom-right-title">
+      <div class="page-content-bottom-right">
+        <div class="page-content-bottom-right-title">
           <span>当前已预约时段:</span>
         </div>
-        <div class="doctor-info-page-content-bottom-right-content">
+        <div class="page-content-bottom-right-content">
           <div
             v-for="(item, index) in displayTimes"
             :key="index"
-            class="doctor-info-page-content-bottom-right-text"
+            class="page-content-bottom-right-text"
           >
             <span>{{ item }}</span>
           </div>
@@ -143,7 +143,7 @@ export default {
       return displayTimesArr;
     },
     displayInfo() {
-      return this.info.info && `&nbsp;&nbsp;&nbsp;&nbsp;${ this.info.info.replace(/\n/g, '\n&nbsp;&nbsp;&nbsp;&nbsp;')}`;
+      return this.info.info && `&nbsp;&nbsp;&nbsp;&nbsp;${this.info.info.replace(/\n/g, '\n&nbsp;&nbsp;&nbsp;&nbsp;')}`;
     },
   },
   watch: {
@@ -213,16 +213,16 @@ export default {
 </script>
 
 <style scoped>
-.dcotor-info-page {
+.page {
   white-space: pre-line;
 }
 
-.dcotor-info-content-top {
+.content-top {
   display: flex;
   margin: 50px 200px 50px 80px;
 }
 
-.dcotor-info-content-top-left {
+.content-top-left {
   flex: 1;
   text-align: center;
 }
@@ -232,51 +232,52 @@ export default {
   height: 300px;
 }
 
-.dcotor-info-content-top-right {
+.content-top-right {
   flex: 4;
 }
 
-.dcotor-info-content-top-right-name {
+.content-top-right-name {
   font-size: 20px;
   font-weight: 700;
   margin: 15px 0;
 }
 
-.dcotor-info-content-top-right-tel,
-.dcotor-info-content-top-right-partment {
+.content-top-right-tel,
+.content-top-right-partment {
   font-size: 18px;
   margin: 10px 0;
 }
-.dcotor-info-content-top-right-info {
+.content-top-right-info {
   font-size: 16px;
   line-height: 25px;
 }
 
-.doctor-info-page-content-bottom {
+.page-content-bottom {
   display: flex;
   justify-content: space-around;
   margin-top: 50px;
 }
 
-.doctor-info-page-content-bottom-text,
-.doctor-info-page-content-bottom-date,
-.doctor-info-page-content-bottom-time,
-.doctor-info-page-content-bottom-button {
+.page-content-bottom-text,
+.page-content-bottom-date,
+.page-content-bottom-time,
+.page-content-bottom-button {
   margin-top: 50px;
 }
 
-.doctor-info-page-content-bottom-text {
+.page-content-bottom-text {
+  margin-top: 20px;
   font-size: 20px;
   font-weight: 700;
 }
 
-.doctor-info-page-content-bottom-right-title {
+.page-content-bottom-right-title {
   margin: 20px 0;
   font-size: 20px;
   font-weight: 700;
 }
 
-.doctor-info-page-content-bottom-right-content {
+.page-content-bottom-right-content {
   height: 300px;
   width: 400px;
   overflow-y: scroll;
@@ -284,7 +285,7 @@ export default {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
 }
 
-.doctor-info-page-content-bottom-right-text {
+.page-content-bottom-right-text {
   font-size: 18px;
   height: 50px;
   line-height: 50px;
@@ -292,7 +293,7 @@ export default {
   text-align: center;
 }
 
-.doctor-info-page-content-bottom-right-text:hover {
+.page-content-bottom-right-text:hover {
   background-color: #f2f6fc;
 }
 </style>

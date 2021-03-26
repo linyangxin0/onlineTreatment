@@ -20,6 +20,13 @@
             </el-button>
             <el-button
               size="small"
+              type="info"
+              @click="changeInfo"
+            >
+              修改信息
+            </el-button>
+            <el-button
+              size="small"
               type="danger"
               @click="logout"
             >
@@ -233,6 +240,9 @@ export default {
     },
     enterInfoPage(doctorId) {
       this.$router.push(`/doctorInfo/${doctorId}`);
+    },
+    changeInfo() {
+      this.$router.push(`/changeInfo/${localStorage.getItem('userId')}`);
     },
   },
   sockets: {

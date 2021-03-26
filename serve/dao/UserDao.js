@@ -81,4 +81,22 @@ module.exports.selectAllTimeById = function (id, callback) {
         })
 }
 
+//根据id查找user_info
+module.exports.selectUserInfoById = function (id, callback) {
+    return connection.query('select * from user where id = ?',
+        [id], function (error, results, fields) {
+            if (error) throw error;
+            callback(results)
+        })
+}
+
+//修改密码
+module.exports.updateUserInfo = function (id, tel, partment, info, callback) {
+    return connection.query('update user set tel=?, partment=?, info=? where id=?',
+        [tel, partment, info, id], function (error, results, fields) {
+            if (error) throw error;
+            callback(results)
+        })
+}
+
 

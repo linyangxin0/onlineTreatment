@@ -67,3 +67,23 @@ export function getAppointmentById(id) {
         }
     });
 }
+
+
+export function getUserInfoById(id) {
+    return request({
+        url: '/getUserInfoById',
+        params: {
+            id
+        }
+    });
+}
+
+export function updateUserInfo(id, info) {
+    return request({
+        url: '/updateUserInfo',
+        params: {
+            id,
+            ...info
+        }
+    });
+}

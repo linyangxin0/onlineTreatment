@@ -43,7 +43,14 @@ const routes = [
         path: '/doctorInfo/:id',
         name: 'doctorInfo',
         component: () => import('../views/DoctorInfoPage')
+    },
+    {
+        path: '/changeInfo/:id',
+        name: 'changeInfo',
+        component: () => import('../views/ChangeInfoPage')
     }
+
+
 ]
 
 const router = new VueRouter({

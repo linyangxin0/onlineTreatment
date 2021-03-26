@@ -100,6 +100,24 @@ module.exports = function (app) {
             res.send(back)
         })
     })
+
+    //获取预约时间
+    app.get('/getUserInfoById', async (req, res) => {
+        await loginDao.selectUserInfoById(req.query.id, back => {
+            res.send(back[0])
+        })
+    })
+
+    //获取预约时间
+    app.get('/updateUserInfo', async (req, res) => {
+        await loginDao.updateUserInfo(req.query.id, req.query.tel, req.query.partment, req.query.info, back => {
+            if (back.changedRows !== 0) {
+                res.send(true);
+            } else {
+                res.send(false);
+            }
+        })
+    })
 }
 
 

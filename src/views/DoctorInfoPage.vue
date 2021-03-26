@@ -77,8 +77,9 @@
             v-for="(item, index) in displayTimes"
             :key="index"
             class="page-content-bottom-right-text"
+            :class="{ ownAppointment: userId + '' === item.user_id + '' }"
           >
-            <span>{{ item }}</span>
+            <span>{{ item.time }}</span>
           </div>
         </div>
       </div>
@@ -130,17 +131,15 @@ export default {
           },
         ],
       },
+      userId: '',
     };
   },
   computed: {
     displayTimes() {
-      let displayTimesArr = [];
-      let arr = [];
-      this.appointedTimes.forEach(item => arr.push(item.time));
-      arr.forEach(item => {
-        displayTimesArr.push(dateFormat('YY-mm-dd HH:MM', new Date(item)));
+      this.appointedTimes.forEach(item => {
+        item.time = dateFormat('YY-mm-dd HH:MM', new Date(item.time));
       });
-      return displayTimesArr;
+      return this.appointedTimes;
     },
     displayInfo() {
       return this.info.info && `&nbsp;&nbsp;&nbsp;&nbsp;${this.info.info.replace(/\n/g, '\n&nbsp;&nbsp;&nbsp;&nbsp;')}`;
@@ -159,6 +158,7 @@ export default {
       this.info = res.data;
     });
     this._getAppointment();
+    this.userId = localStorage.getItem('userId');
   },
   methods: {
     transfromToTimeSamp() {
@@ -171,7 +171,7 @@ export default {
     },
     makeAppointment() {
       if (this.timeStamp !== '') {
-        addAppointment(this.$route.params.id, this.timeStamp).then(res => {
+        addAppointment(this.$route.params.id, this.timeStamp, this.userId).then(res => {
           if (res.data) {
             this.$message({
               message: '预约成功',
@@ -295,5 +295,9 @@ export default {
 
 .page-content-bottom-right-text:hover {
   background-color: #f2f6fc;
+}
+
+.ownAppointment {
+  background-color: #c1ffc1;
 }
 </style>

@@ -87,7 +87,7 @@ module.exports = function (app) {
             if (flag) {
                 res.send(false)
             } else {
-                loginDao.addAppointment(req.query.id, time, back => {
+                loginDao.addAppointment(req.query.doctorId, time, req.query.userId, back => {
                     res.send(true)
                 })
             }
@@ -95,7 +95,7 @@ module.exports = function (app) {
     });
 
     //获取预约时间
-    app.get('/getAppointmentById',async (req, res) => {
+    app.get('/getAppointmentById', async (req, res) => {
         await loginDao.selectAllTimeById(req.query.id, back => {
             res.send(back)
         })

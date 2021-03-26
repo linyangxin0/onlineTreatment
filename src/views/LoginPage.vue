@@ -6,41 +6,56 @@
       </div>
       <div class="login-input-content">
         <span class="login-input-text">账号：</span>
-        <el-input class="login-input"
-                  clearable
-                  v-model="account"
-                  placeholder="account"
-                  prefix-icon="el-icon-user-solid"></el-input>
+        <el-input
+          v-model="account"
+          class="login-input"
+          clearable
+          placeholder="account"
+          prefix-icon="el-icon-user-solid"
+        />
       </div>
       <div class="login-input-content">
         <span class="login-input-text">密码：</span>
-        <el-input class="login-input"
-                  prefix-icon="el-icon-edit"
-                  placeholder="password"
-                  v-model="password"
-                  type="password"
-                  clearable
-                  @keypress.native.enter="login"></el-input>
+        <el-input
+          v-model="password"
+          class="login-input"
+          prefix-icon="el-icon-edit"
+          placeholder="password"
+          type="password"
+          clearable
+          @keypress.native.enter="login"
+        />
       </div>
       <div class="login-bottom">
-        <el-button class="login-btn" type="success" @click="login">登录</el-button>
-        <el-button class="login-btn" type="info" @click="register">注册</el-button>
+        <el-button
+          class="login-btn"
+          type="success"
+          @click="login"
+        >
+          登录
+        </el-button>
+        <el-button
+          class="login-btn"
+          type="info"
+          @click="register"
+        >
+          注册
+        </el-button>
       </div>
-
     </div>
   </div>
 </template>
 
 <script>
-import {userLogin} from "@/request/user";
+import { userLogin } from '@/request/user';
 
 export default {
-  name: "LoginPage",
+  name: 'LoginPage',
   data() {
     return {
       account: '',
-      password: ''
-    }
+      password: '',
+    };
   },
   methods: {
     login() {
@@ -51,12 +66,13 @@ export default {
           if (res.data) {
             this.$message({
               message: '登陆成功',
-              type: 'success'
+              type: 'success',
             });
-            this.$router.push('/')
-            localStorage.setItem('userName', res.data.name)
-            localStorage.setItem('account', res.data.account)
-            localStorage.setItem('isDoctor', res.data.doctor)
+            this.$router.push('/');
+            localStorage.setItem('userName', res.data.name);
+            localStorage.setItem('account', res.data.account);
+            localStorage.setItem('isDoctor', res.data.doctor);
+            localStorage.setItem('userId', res.data.id);
           } else {
             this.$message.error('用户名或密码错误');
           }
@@ -64,10 +80,10 @@ export default {
       }
     },
     register() {
-      this.$router.push('/register')
-    }
-  }
-}
+      this.$router.push('/register');
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -78,7 +94,7 @@ export default {
   top: 0;
   bottom: 0;
 
-  background-image: url("../assets/img/loginBg.jpg");
+  background-image: url('../assets/img/loginBg.jpg');
   background-size: cover;
 }
 
@@ -90,7 +106,7 @@ export default {
 
   height: 300px;
   width: 500px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .5);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.5);
 }
 
 .login-title {

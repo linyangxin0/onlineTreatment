@@ -50,11 +50,11 @@ export function selectDoctorInfoById(id) {
     });
 }
 
-export function addAppointment(id, time) {
+export function addAppointment(doctorId, time, userId) {
     return request({
         url: '/addAppointment',
         params: {
-            id, time
+            doctorId, time, userId
         }
     });
 }

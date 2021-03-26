@@ -59,7 +59,7 @@
 
       <div class="home-center">
         <div class="home-center-title">
-          <span>在线医师</span>
+          <span>医师</span>
         </div>
         <div class="home-center-content">
           <div

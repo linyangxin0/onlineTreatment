@@ -35,11 +35,13 @@
             v-model="date"
             type="date"
             placeholder="选择日期"
+            :picker-options="pickerOptions"
             class="doctor-info-page-content-bottom-date"
           />
         </div>
         <div>
           <el-time-select
+            ref="timeSelect"
             v-model="time"
             :picker-options="{
               start: '08:30',
@@ -48,6 +50,7 @@
             }"
             placeholder="选择时间"
             class="doctor-info-page-content-bottom-time"
+            @change="choseTime"
           />
         </div>
         <div>
@@ -64,9 +67,9 @@
       <!-- 当前已预约时段 -->
       <div class="doctor-info-page-content-bottom-right">
         <div class="doctor-info-page-content-bottom-right-title">
-          <span>当前已预约时段</span>
+          <span>当前已预约时段:</span>
         </div>
-        <div>
+        <div class="doctor-info-page-content-bottom-right-content">
           <div
             v-for="(item, index) in displayTimes"
             :key="index"
@@ -93,6 +96,37 @@ export default {
       time: '',
       timeStamp: '',
       appointedTimes: [],
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() < Date.now();
+        },
+        shortcuts: [
+          {
+            text: '明天',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() + 3600 * 1000 * 24);
+              picker.$emit('pick', date);
+            },
+          },
+          {
+            text: '后天',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() + 3600 * 1000 * 24 * 2);
+              picker.$emit('pick', date);
+            },
+          },
+          {
+            text: '一周后',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() + 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', date);
+            },
+          },
+        ],
+      },
     };
   },
   computed: {
@@ -118,9 +152,7 @@ export default {
     selectDoctorInfoById(this.$route.params.id).then(res => {
       this.info = res.data;
     });
-    getAppointmentById(this.$route.params.id).then(res => {
-      this.appointedTimes = res.data;
-    });
+    this._getAppointment();
   },
   methods: {
     transfromToTimeSamp() {
@@ -139,6 +171,9 @@ export default {
               message: '预约成功',
               type: 'success',
             });
+            this._getAppointment();
+            this.time = '';
+            this.date = '';
           } else {
             this.$message({
               message: '预约失败，该时段已有预约',
@@ -151,6 +186,20 @@ export default {
           message: '请选择正确时间',
           type: 'warning',
         });
+      }
+    },
+    _getAppointment() {
+      getAppointmentById(this.$route.params.id).then(res => {
+        this.appointedTimes = res.data;
+      });
+    },
+    choseTime() {
+      if (this.date === '') {
+        this.$message({
+          message: '请先选择日期',
+          type: 'warning',
+        });
+        this.time = '';
       }
     },
   },
@@ -210,14 +259,34 @@ export default {
   margin-top: 50px;
 }
 
+.doctor-info-page-content-bottom-text {
+  font-size: 20px;
+  font-weight: 700;
+}
+
 .doctor-info-page-content-bottom-right-title {
   margin: 20px 0;
   font-size: 20px;
   font-weight: 700;
 }
+
+.doctor-info-page-content-bottom-right-content {
+  height: 300px;
+  width: 400px;
+  overflow-y: scroll;
+
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
+}
+
 .doctor-info-page-content-bottom-right-text {
   font-size: 18px;
-  height: 25px;
-  line-height: 25px;
+  height: 50px;
+  line-height: 50px;
+
+  text-align: center;
+}
+
+.doctor-info-page-content-bottom-right-text:hover {
+  background-color: #f2f6fc;
 }
 </style>
